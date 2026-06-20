@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Website Assistant — Northpeak Solutions</title>
+<meta name="description" content="What Northpeak builds: custom AI assistants, workflow automation, document intelligence, and intelligent search — integrated into the tools you already run.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>/* ============ Northpeak Solutions — shared styles ============ */
+:root{
+  --ink:#0b1014; --ink-2:#0f161c; --slate:#161f27;
+  --paper:#e9eef0; --muted:#7c8a93; --line:rgba(233,238,240,.10);
+  --cyan:#5fd4d6; --copper:#c98a5e; --maxw:1200px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--ink)}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--paper);background:var(--ink);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,.disp{font-family:'Space Grotesk',sans-serif;letter-spacing:-.02em;line-height:1.07}
+.mono{font-family:'JetBrains Mono',monospace}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--cyan);color:var(--ink)}
+img{max-width:100%;display:block}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:60;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  padding:20px clamp(20px,5vw,60px);transition:padding .4s,background .4s,border-color .4s;border-bottom:1px solid transparent}
+nav.scrolled{padding:13px clamp(20px,5vw,60px);background:rgba(11,16,20,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;font-family:'Space Grotesk';font-weight:600;font-size:17px}
+.brand .peak{width:26px;height:26px;flex:none}
+.brand .peak path{stroke:var(--cyan);stroke-width:1.6;fill:none}
+.brand small{display:block;font-size:9.5px;letter-spacing:.28em;color:var(--muted);font-family:'JetBrains Mono';margin-top:1px}
+.nav-mid{display:flex;gap:32px;font-size:14px;color:var(--muted);font-weight:500;justify-self:center}
+.nav-mid a{position:relative;transition:color .25s}
+.nav-mid a::after{content:"";position:absolute;left:0;right:100%;bottom:-5px;height:1px;background:var(--cyan);transition:right .3s}
+.nav-mid a:hover,.nav-mid a.active{color:var(--paper)}.nav-mid a:hover::after,.nav-mid a.active::after{right:0}
+.nav-end{justify-self:end}
+.btn{font-family:'Space Grotesk';font-weight:500;font-size:14px;padding:11px 22px;border-radius:2px;cursor:pointer;transition:.25s;display:inline-block;border:1px solid var(--line);color:var(--paper);background:transparent}
+.btn:hover{border-color:var(--cyan);color:var(--cyan)}
+.btn-solid{background:var(--cyan);color:var(--ink);border-color:var(--cyan);font-weight:600}
+.btn-solid:hover{background:transparent;color:var(--cyan)}
+.btn-lg{padding:15px 30px;font-size:15.5px}
+
+/* layout */
+.wrap{max-width:var(--maxw);margin:0 auto}
+section{padding:clamp(80px,12vh,140px) clamp(20px,5vw,60px);position:relative;z-index:2;background:var(--ink)}
+.elev{font-family:'JetBrains Mono';font-size:12px;color:var(--copper);letter-spacing:.16em;margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.elev::before{content:"";width:8px;height:8px;border:1.5px solid var(--copper);border-radius:50%;flex:none}
+.sec-h{font-size:clamp(28px,4.2vw,50px);font-weight:600;max-width:18ch}
+.sec-sub{color:var(--muted);max-width:60ch;margin-top:20px;font-size:17px}
+
+/* page hero (interior pages) */
+.page-hero{min-height:58vh;display:flex;align-items:flex-end;padding:160px clamp(20px,5vw,60px) clamp(50px,7vh,90px);position:relative;overflow:hidden}
+.page-hero canvas{position:absolute;inset:0;z-index:0}
+.page-hero .veil{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(11,16,20,.4),rgba(11,16,20,.55) 60%,var(--ink))}
+.page-hero .inner{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;width:100%}
+.page-hero h1{font-size:clamp(38px,6vw,76px);font-weight:700;max-width:16ch}
+.page-hero h1 em{font-style:normal;color:var(--cyan)}
+.page-hero p{color:var(--muted);font-size:clamp(16px,1.5vw,19px);max-width:54ch;margin-top:24px}
+
+/* contour divider */
+.contour-div{height:60px;position:relative;z-index:2;background:var(--ink);overflow:hidden}
+.contour-div svg{width:100%;height:100%;display:block}
+.contour-div path{stroke:var(--line);stroke-width:1;fill:none}
+
+/* footer */
+footer{background:var(--ink);border-top:1px solid var(--line);padding:64px clamp(20px,5vw,60px) 40px;position:relative;z-index:2}
+.foot{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px}
+.foot p{color:var(--muted);font-size:14.5px;max-width:32ch;margin-top:18px}
+.foot h5{font-family:'JetBrains Mono';font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.foot a.lnk{display:block;font-size:14.5px;margin-bottom:11px;opacity:.85;transition:.2s}
+.foot a.lnk:hover{color:var(--cyan);opacity:1}
+.foot-end{max-width:var(--maxw);margin:48px auto 0;padding-top:24px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:11.5px;color:var(--muted);flex-wrap:wrap;gap:10px;letter-spacing:.04em}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.07s}.d2{transition-delay:.14s}.d3{transition-delay:.21s}.d4{transition-delay:.28s}
+
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+
+@media(max-width:880px){
+  nav{grid-template-columns:1fr auto}
+  .nav-mid{display:none}
+  .foot{grid-template-columns:1fr 1fr}
+}
+@media(prefers-reduced-motion:reduce){.reveal{transition:none;opacity:1;transform:none}html{scroll-behavior:auto}}
+
+/* responsive fixes for inline-grid layouts */
+@media(max-width:880px){
+  section > .wrap[style*="grid-template-columns:1.2fr 1fr"],
+  section > .wrap[style*="grid-template-columns:repeat(4,1fr)"]{grid-template-columns:1fr !important;gap:14px !important}
+  div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important}
+  div[style*="grid-template-columns:repeat(4,1fr)"]{grid-template-columns:1fr 1fr !important}
+  div[style*="grid-template-columns:90px 1.3fr 2fr"]{grid-template-columns:50px 1fr !important;gap:14px !important}
+  .np-cap p{grid-column:1/-1}
+}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a class="brand" href="index.html"><svg class="peak" viewBox="0 0 28 28"><path d="M2 22 L10 8 L14 14 L19 5 L26 22"/><path d="M6 22 L10 14 L13 18"/></svg><span>Northpeak<small>SOLUTIONS</small></span></a>
+  <div class="nav-mid">
+    <a href="index.html">Home</a>
+    <a href="services.html" class="active">Services</a>
+    <a href="about.html">About</a>
+    <a href="insights.html">Insights</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="nav-end"><a href="contact.html" class="btn btn-solid">Book a survey</a></div>
+</nav>
+
+<section class="page-hero">
+  <canvas data-topo></canvas><div class="veil"></div>
+  <div class="inner">
+    <div class="elev mono reveal">SERVICE · AI WEBSITE ASSISTANT</div>
+    <h1 class="reveal d1">An assistant that knows your business — and <em>captures leads</em> around the clock.</h1>
+    <p class="reveal d2">We build a tailored AI assistant, trained on your own website, that answers visitors instantly, pre-screens interest, and hands your team warm leads — 24/7, even when your office is closed.</p>
+    <div class="reveal d3" style="margin-top:28px;display:flex;gap:16px;flex-wrap:wrap">
+      <a href="contact.html" class="btn btn-solid btn-lg">Get a free demo on your site</a>
+      <a href="#how" class="btn btn-lg">See how it works</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="elev mono reveal">ELEV. 0210 — WHAT IT LOOKS LIKE</div>
+    <h2 class="sec-h reveal d1">A quiet assistant, living on your site.</h2>
+    <p class="sec-sub reveal d2">It sits in the corner of your website. Visitors ask questions and get instant, accurate answers — and the interested ones get turned into leads.</p>
+    <div class="reveal d2" style="margin-top:44px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--ink-2);padding:30px">
+      <img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNzIwIDQ4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBmb250LWZhbWlseT0iSW50ZXIsIHNhbnMtc2VyaWYiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iTW9ja3VwIG9mIGEgd2Vic2l0ZSB3aXRoIHRoZSBOb3J0aHBlYWsgYXNzaXN0YW50IHdpZGdldCBvcGVuIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic2NyIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzExMWEyMiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzBkMTQxYiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYnViIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzVmZDRkNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzNmYjhiYiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxjbGlwUGF0aCBpZD0icm91bmQiPjxyZWN0IHg9IjIwIiB5PSIyMCIgd2lkdGg9IjY4MCIgaGVpZ2h0PSI0NDAiIHJ4PSIxMiIvPjwvY2xpcFBhdGg+CiAgPC9kZWZzPgoKICA8IS0tIGJyb3dzZXIgZnJhbWUgLS0+CiAgPHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iNjgwIiBoZWlnaHQ9IjQ0MCIgcng9IjEyIiBmaWxsPSJ1cmwoI3NjcikiIHN0cm9rZT0icmdiYSgyMzMsMjM4LDI0MCwuMTIpIi8+CiAgPGcgY2xpcC1wYXRoPSJ1cmwoI3JvdW5kKSI+CiAgICA8IS0tIHRvcCBiYXIgLS0+CiAgICA8cmVjdCB4PSIyMCIgeT0iMjAiIHdpZHRoPSI2ODAiIGhlaWdodD0iNDAiIGZpbGw9IiMwYjEwMTQiLz4KICAgIDxjaXJjbGUgY3g9IjQ0IiBjeT0iNDAiIHI9IjUiIGZpbGw9IiNjOThhNWUiLz48Y2lyY2xlIGN4PSI2MiIgY3k9IjQwIiByPSI1IiBmaWxsPSIjN2M4YTkzIi8+PGNpcmNsZSBjeD0iODAiIGN5PSI0MCIgcj0iNSIgZmlsbD0iIzVmZDRkNiIvPgogICAgPHJlY3QgeD0iMTIwIiB5PSIzMSIgd2lkdGg9IjM4MCIgaGVpZ2h0PSIxOCIgcng9IjkiIGZpbGw9InJnYmEoMjMzLDIzOCwyNDAsLjA2KSIvPgogICAgPHRleHQgeD0iMTM1IiB5PSI0NCIgZmlsbD0iIzdjOGE5MyIgZm9udC1zaXplPSIxMSIgZm9udC1mYW1pbHk9IkpldEJyYWlucyBNb25vLCBtb25vc3BhY2UiPmFjbWUtbGF3LmNvbTwvdGV4dD4KCiAgICA8IS0tIGZhdXggc2l0ZSBjb250ZW50IC0tPgogICAgPHJlY3QgeD0iNTAiIHk9Ijg2IiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE0IiByeD0iNCIgZmlsbD0icmdiYSgyMzMsMjM4LDI0MCwuMTgpIi8+CiAgICA8cmVjdCB4PSI1MCIgeT0iMTEwIiB3aWR0aD0iMzAwIiBoZWlnaHQ9IjEwIiByeD0iNCIgZmlsbD0icmdiYSgyMzMsMjM4LDI0MCwuMDkpIi8+CiAgICA8cmVjdCB4PSI1MCIgeT0iMTI4IiB3aWR0aD0iMjYwIiBoZWlnaHQ9IjEwIiByeD0iNCIgZmlsbD0icmdiYSgyMzMsMjM4LDI0MCwuMDkpIi8+CiAgICA8cmVjdCB4PSI1MCIgeT0iMTYwIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0icmdiYSg5NSwyMTIsMjE0LC4xNikiIHN0cm9rZT0icmdiYSg5NSwyMTIsMjE0LC40KSIvPgogICAgPHRleHQgeD0iNzQiIHk9IjE4MSIgZmlsbD0iIzVmZDRkNiIgZm9udC1zaXplPSIxMiI+Q29udGFjdCB1czwvdGV4dD4KICAgIDxyZWN0IHg9IjUwIiB5PSIyMjAiIHdpZHRoPSI2MTAiIGhlaWdodD0iMSIgZmlsbD0icmdiYSgyMzMsMjM4LDI0MCwuMDcpIi8+CiAgICA8cmVjdCB4PSI1MCIgeT0iMjQ0IiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjEwMCIgcng9IjYiIGZpbGw9InJnYmEoMjMzLDIzOCwyNDAsLjA0KSIvPgogICAgPHJlY3QgeD0iMjQ1IiB5PSIyNDQiIHdpZHRoPSIxODAiIGhlaWdodD0iMTAwIiByeD0iNiIgZmlsbD0icmdiYSgyMzMsMjM4LDI0MCwuMDQpIi8+CiAgICA8cmVjdCB4PSI0NDAiIHk9IjI0NCIgd2lkdGg9IjE4MCIgaGVpZ2h0PSIxMDAiIHJ4PSI2IiBmaWxsPSJyZ2JhKDIzMywyMzgsMjQwLC4wNCkiLz4KCiAgICA8IS0tIGNoYXQgd2lkZ2V0IHBhbmVsIC0tPgogICAgPGc+CiAgICAgIDxyZWN0IHg9IjQzNiIgeT0iMTUwIiB3aWR0aD0iMjQ0IiBoZWlnaHQ9IjI4MCIgcng9IjEyIiBmaWxsPSIjMGIxMDE0IiBzdHJva2U9InJnYmEoOTUsMjEyLDIxNCwuMzUpIi8+CiAgICAgIDwhLS0gd2lkZ2V0IGhlYWRlciAtLT4KICAgICAgPHJlY3QgeD0iNDM2IiB5PSIxNTAiIHdpZHRoPSIyNDQiIGhlaWdodD0iNDYiIHJ4PSIxMiIgZmlsbD0iIzBmMTYxYyIvPgogICAgICA8cmVjdCB4PSI0MzYiIHk9IjE4MCIgd2lkdGg9IjI0NCIgaGVpZ2h0PSIxNiIgZmlsbD0iIzBmMTYxYyIvPgogICAgICA8Y2lyY2xlIGN4PSI0NTgiIGN5PSIxNzMiIHI9IjkiIGZpbGw9InVybCgjYnViKSIvPgogICAgICA8cGF0aCBkPSJNNDUzIDE3NiBsMyAtNSBsMiAyIGwzIC00IGwzIDcgeiIgZmlsbD0iIzBiMTAxNCIvPgogICAgICA8dGV4dCB4PSI0NzYiIHk9IjE3MCIgZmlsbD0iI2U5ZWVmMCIgZm9udC1zaXplPSIxMi41IiBmb250LXdlaWdodD0iNjAwIiBmb250LWZhbWlseT0iU3BhY2UgR3JvdGVzaywgc2Fucy1zZXJpZiI+QWNtZSBBc3Npc3RhbnQ8L3RleHQ+CiAgICAgIDx0ZXh0IHg9IjQ3NiIgeT0iMTg0IiBmaWxsPSIjNWZkNGQ2IiBmb250LXNpemU9IjkuNSIgZm9udC1mYW1pbHk9IkpldEJyYWlucyBNb25vLCBtb25vc3BhY2UiPuKXjyBPTkxJTkU8L3RleHQ+CgogICAgICA8IS0tIG1lc3NhZ2VzIC0tPgogICAgICA8ZyBmb250LXNpemU9IjExIj4KICAgICAgICA8IS0tIGJvdCAtLT4KICAgICAgICA8cmVjdCB4PSI0NTAiIHk9IjIxMCIgd2lkdGg9IjE1MCIgaGVpZ2h0PSI0MCIgcng9IjEwIiBmaWxsPSJyZ2JhKDIzMywyMzgsMjQwLC4wNikiLz4KICAgICAgICA8dGV4dCB4PSI0NjIiIHk9IjIyNyIgZmlsbD0iI2NkZDZkYyI+SGkhIEFzayBtZSBhbnl0aGluZyBhYm91dDwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI0NjIiIHk9IjI0MSIgZmlsbD0iI2NkZDZkYyI+b3VyIHNlcnZpY2VzIG9yIGhvdXJzLjwvdGV4dD4KICAgICAgICA8IS0tIHVzZXIgLS0+CiAgICAgICAgPHJlY3QgeD0iNTE2IiB5PSIyNjIiIHdpZHRoPSIxNTAiIGhlaWdodD0iMjYiIHJ4PSIxMCIgZmlsbD0idXJsKCNidWIpIi8+CiAgICAgICAgPHRleHQgeD0iNTI4IiB5PSIyNzkiIGZpbGw9IiMwYjEwMTQiPkRvIHlvdSBkbyB3aWxscz88L3RleHQ+CiAgICAgICAgPCEtLSBib3QgLS0+CiAgICAgICAgPHJlY3QgeD0iNDUwIiB5PSIzMDAiIHdpZHRoPSIxODAiIGhlaWdodD0iNjgiIHJ4PSIxMCIgZmlsbD0icmdiYSgyMzMsMjM4LDI0MCwuMDYpIi8+CiAgICAgICAgPHRleHQgeD0iNDYyIiB5PSIzMTgiIGZpbGw9IiNjZGQ2ZGMiPlllcyDigJQgZXN0YXRlIHBsYW5uaW5nIGlzIG9uZTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI0NjIiIHk9IjMzMiIgZmlsbD0iI2NkZDZkYyI+b2Ygb3VyIGNvcmUgcHJhY3RpY2UgYXJlYXMuPC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjQ2MiIgeT0iMzQ2IiBmaWxsPSIjY2RkNmRjIj5XYW50IHRvIGJvb2sgYSBjb25zdWx0PzwvdGV4dD4KICAgICAgICA8cmVjdCB4PSI0NjIiIHk9IjM1MiIgd2lkdGg9IjkyIiBoZWlnaHQ9IjkiIHJ4PSI0IiBmaWxsPSJyZ2JhKDk1LDIxMiwyMTQsLjI1KSIvPgogICAgICA8L2c+CgogICAgICA8IS0tIGlucHV0IC0tPgogICAgICA8cmVjdCB4PSI0NTAiIHk9IjM5MiIgd2lkdGg9IjIxNiIgaGVpZ2h0PSIyOCIgcng9IjE0IiBmaWxsPSJyZ2JhKDIzMywyMzgsMjQwLC4wNSkiIHN0cm9rZT0icmdiYSgyMzMsMjM4LDI0MCwuMSkiLz4KICAgICAgPHRleHQgeD0iNDY0IiB5PSI0MTAiIGZpbGw9IiM3YzhhOTMiIGZvbnQtc2l6ZT0iMTEiPlR5cGUgeW91ciBxdWVzdGlvbuKApjwvdGV4dD4KICAgICAgPGNpcmNsZSBjeD0iNjUyIiBjeT0iNDA2IiByPSIxMSIgZmlsbD0idXJsKCNidWIpIi8+CiAgICAgIDxwYXRoIGQ9Ik02NDcgNDA2IGw5IC0zIGwtMyA5IGwtMiAtNCB6IiBmaWxsPSIjMGIxMDE0Ii8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K" alt="The Northpeak assistant answering a visitor on a website" style="border-radius:8px"/>
+    </div>
+  </div>
+</section>
+
+<div class="contour-div"><svg viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0 40 Q150 10 300 35 T600 30 T900 38 T1200 25"/><path d="M0 52 Q150 28 300 48 T600 44 T900 50 T1200 40"/></svg></div>
+
+<section id="how">
+  <div class="wrap">
+    <div class="elev mono reveal">ELEV. 0640 — HOW IT WORKS</div>
+    <h2 class="sec-h reveal d1">One engine. Dropped into your site.</h2>
+    <p class="sec-sub reveal d2">The intelligence runs on our secure infrastructure and stays tuned to your content. You add one line of code — or we do it for you.</p>
+    <div class="reveal d2" style="margin-top:44px;border:1px solid var(--line);border-radius:16px;background:var(--ink-2);padding:36px">
+      <img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgOTIwIDM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBmb250LWZhbWlseT0iSW50ZXIsIHNhbnMtc2VyaWYiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iQXJjaGl0ZWN0dXJlIGRpYWdyYW06IGNsaWVudCB3ZWJzaXRlIHRvIE5vcnRocGVhayBiYWNrZW5kIHRvIEFJIG1vZGVsIGFuZCBrbm93bGVkZ2UgYmFzZSI+CiAgPGRlZnM+CiAgICA8bWFya2VyIGlkPSJhcnIiIG1hcmtlcldpZHRoPSI5IiBtYXJrZXJIZWlnaHQ9IjkiIHJlZlg9IjciIHJlZlk9IjQuNSIgb3JpZW50PSJhdXRvIj4KICAgICAgPHBhdGggZD0iTTAgMCBMOSA0LjUgTDAgOSB6IiBmaWxsPSIjNWZkNGQ2Ii8+CiAgICA8L21hcmtlcj4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYWNjIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMCI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzVmZDRkNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzNmYjhiYiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHN0eWxlPgogICAgLmJveHtmaWxsOiMwZjE2MWM7c3Ryb2tlOnJnYmEoMjMzLDIzOCwyNDAsLjE0KTtyeDoxMH0KICAgIC5sYmx7ZmlsbDojZTllZWYwO2ZvbnQtc2l6ZToxNHB4O2ZvbnQtd2VpZ2h0OjYwMDtmb250LWZhbWlseTonU3BhY2UgR3JvdGVzaycsc2Fucy1zZXJpZn0KICAgIC5zdWJ7ZmlsbDojN2M4YTkzO2ZvbnQtc2l6ZToxMXB4O2ZvbnQtZmFtaWx5OidKZXRCcmFpbnMgTW9ubycsbW9ub3NwYWNlfQogICAgLnRhZ3tmaWxsOiNjOThhNWU7Zm9udC1zaXplOjEwcHg7Zm9udC1mYW1pbHk6J0pldEJyYWlucyBNb25vJyxtb25vc3BhY2U7bGV0dGVyLXNwYWNpbmc6LjFlbX0KICAgIC5mbG93e3N0cm9rZTojNWZkNGQ2O3N0cm9rZS13aWR0aDoxLjY7ZmlsbDpub25lO21hcmtlci1lbmQ6dXJsKCNhcnIpO29wYWNpdHk6Ljh9CiAgICAuZmxvd2JhY2t7c3Ryb2tlOnJnYmEoOTUsMjEyLDIxNCwuNCk7c3Ryb2tlLXdpZHRoOjEuNDtmaWxsOm5vbmU7c3Ryb2tlLWRhc2hhcnJheTo0IDR9CiAgPC9zdHlsZT4KCiAgPCEtLSAxLiBjbGllbnQgc2l0ZSAtLT4KICA8cmVjdCBjbGFzcz0iYm94IiB4PSIyMCIgeT0iMTIwIiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjEyMCIgcng9IjEwIi8+CiAgPHRleHQgY2xhc3M9InRhZyIgeD0iNDAiIHk9IjE0OCI+MDEgwrcgVEhFSVIgU0lURTwvdGV4dD4KICA8dGV4dCBjbGFzcz0ibGJsIiB4PSI0MCIgeT0iMTcyIj5DbGllbnQgd2Vic2l0ZTwvdGV4dD4KICA8dGV4dCBjbGFzcz0ic3ViIiB4PSI0MCIgeT0iMTkyIj5Xb3JkUHJlc3MgwrcgV2l4IMK3PC90ZXh0PgogIDx0ZXh0IGNsYXNzPSJzdWIiIHg9IjQwIiB5PSIyMDciPlNxdWFyZXNwYWNlIMK3IGN1c3RvbTwvdGV4dD4KICA8cmVjdCB4PSI0MCIgeT0iMjE2IiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0IiByeD0iNyIgZmlsbD0icmdiYSg5NSwyMTIsMjE0LC4xNCkiIHN0cm9rZT0icmdiYSg5NSwyMTIsMjE0LC40KSIvPgogIDx0ZXh0IHg9IjUwIiB5PSIyMjYiIGNsYXNzPSJzdWIiIGZpbGw9IiM1ZmQ0ZDYiPiZsdDtzY3JpcHQmZ3Q7IGVtYmVkLmpzPC90ZXh0PgoKICA8IS0tIDIuIHdpZGdldCAtLT4KICA8cmVjdCBjbGFzcz0iYm94IiB4PSIyNjAiIHk9IjEyMCIgd2lkdGg9IjE3MCIgaGVpZ2h0PSIxMjAiIHJ4PSIxMCIvPgogIDx0ZXh0IGNsYXNzPSJ0YWciIHg9IjI4MCIgeT0iMTQ4Ij4wMiDCtyBXSURHRVQ8L3RleHQ+CiAgPHRleHQgY2xhc3M9ImxibCIgeD0iMjgwIiB5PSIxNzIiPkNoYXQgd2lkZ2V0PC90ZXh0PgogIDx0ZXh0IGNsYXNzPSJzdWIiIHg9IjI4MCIgeT0iMTkyIj5Mb2FkcyBieSBjbGllbnQgSUQ8L3RleHQ+CiAgPHRleHQgY2xhc3M9InN1YiIgeD0iMjgwIiB5PSIyMDciPmJyYW5kaW5nICsgY29uZmlnPC90ZXh0PgoKICA8IS0tIDMuIGJhY2tlbmQgLS0+CiAgPHJlY3QgY2xhc3M9ImJveCIgeD0iNDkwIiB5PSIxMDAiIHdpZHRoPSIxODAiIGhlaWdodD0iMTYwIiByeD0iMTAiIHN0cm9rZT0icmdiYSg5NSwyMTIsMjE0LC40KSIvPgogIDx0ZXh0IGNsYXNzPSJ0YWciIHg9IjUxMCIgeT0iMTI4Ij4wMyDCtyBOT1JUSFBFQUs8L3RleHQ+CiAgPHRleHQgY2xhc3M9ImxibCIgeD0iNTEwIiB5PSIxNTIiPkJhY2tlbmQgQVBJPC90ZXh0PgogIDx0ZXh0IGNsYXNzPSJzdWIiIHg9IjUxMCIgeT0iMTcyIj5Ob2RlIMK3IHNlcnZlcmxlc3M8L3RleHQ+CiAgPHRleHQgY2xhc3M9InN1YiIgeD0iNTEwIiB5PSIxOTIiPnJldHJpZXZhbCArIHJvdXRpbmc8L3RleHQ+CiAgPGxpbmUgeDE9IjUxMCIgeTE9IjIwNiIgeDI9IjY1MCIgeTI9IjIwNiIgc3Ryb2tlPSJyZ2JhKDIzMywyMzgsMjQwLC4xKSIvPgogIDx0ZXh0IGNsYXNzPSJzdWIiIHg9IjUxMCIgeT0iMjI2IiBmaWxsPSIjNWZkNGQ2Ij5wZXItY2xpZW50IEFQSSBrZXk8L3RleHQ+CiAgPHRleHQgY2xhc3M9InN1YiIgeD0iNTEwIiB5PSIyNDIiIGZpbGw9IiM1ZmQ0ZDYiPmd1YXJkcmFpbHMgKyBoYW5kb2ZmPC90ZXh0PgoKICA8IS0tIDQuIG1vZGVsIC0tPgogIDxyZWN0IGNsYXNzPSJib3giIHg9IjczMCIgeT0iNDAiIHdpZHRoPSIxNzAiIGhlaWdodD0iOTAiIHJ4PSIxMCIvPgogIDx0ZXh0IGNsYXNzPSJ0YWciIHg9Ijc1MCIgeT0iNjYiPjA0IMK3IEFJIE1PREVMPC90ZXh0PgogIDx0ZXh0IGNsYXNzPSJsYmwiIHg9Ijc1MCIgeT0iOTAiPkNsYXVkZSAvIEdQVDwvdGV4dD4KICA8dGV4dCBjbGFzcz0ic3ViIiB4PSI3NTAiIHk9IjExMCI+Z2VuZXJhdGVzIGFuc3dlcjwvdGV4dD4KCiAgPCEtLSA1LiBrbm93bGVkZ2UgYmFzZSAtLT4KICA8cmVjdCBjbGFzcz0iYm94IiB4PSI3MzAiIHk9IjIzMCIgd2lkdGg9IjE3MCIgaGVpZ2h0PSI5MiIgcng9IjEwIi8+CiAgPHRleHQgY2xhc3M9InRhZyIgeD0iNzUwIiB5PSIyNTYiPjA1IMK3IEtOT1dMRURHRTwvdGV4dD4KICA8dGV4dCBjbGFzcz0ibGJsIiB4PSI3NTAiIHk9IjI4MCI+VmVjdG9yIGRhdGFiYXNlPC90ZXh0PgogIDx0ZXh0IGNsYXNzPSJzdWIiIHg9Ijc1MCIgeT0iMzAwIj50aGVpciBjb250ZW50LDwvdGV4dD4KICA8dGV4dCBjbGFzcz0ic3ViIiB4PSI3NTAiIHk9IjMxNCI+aW5kZXhlZCAoUkFHKTwvdGV4dD4KCiAgPCEtLSBmbG93cyAtLT4KICA8cGF0aCBjbGFzcz0iZmxvdyIgZD0iTTIwMCAxODAgTDI1NSAxODAiLz4KICA8cGF0aCBjbGFzcz0iZmxvdyIgZD0iTTQzMCAxODAgTDQ4NSAxODAiLz4KICA8cGF0aCBjbGFzcz0iZmxvdyIgZD0iTTY3MCAxNTAgTDcyNSA5NSIvPgogIDxwYXRoIGNsYXNzPSJmbG93IiBkPSJNNjcwIDIxMCBMNzI1IDI2OCIvPgogIDxwYXRoIGNsYXNzPSJmbG93YmFjayIgZD0iTTcyNSAyODUgQzcwMCAyODUgNjk1IDIwMCA2NzIgMTk1Ii8+CgogIDx0ZXh0IGNsYXNzPSJzdWIiIHg9IjIwNiIgeT0iMTcyIiBmaWxsPSIjN2M4YTkzIj52aXNpdG9yPC90ZXh0PgogIDx0ZXh0IGNsYXNzPSJzdWIiIHg9IjIwNiIgeT0iMTg2IiBmaWxsPSIjN2M4YTkzIj5hc2tzIOKGkjwvdGV4dD4KPC9zdmc+Cg==" alt="How the assistant works: visitor to widget to Northpeak backend to AI and your content"/>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="elev mono reveal">ELEV. 1080 — FEATURES</div>
+    <h2 class="sec-h reveal d1">Everything it does for you.</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;margin-top:50px"><div class="reveal" style="border:1px solid var(--line);border-radius:16px;padding:30px;background:var(--ink-2)">
+  <div class="mono" style="color:var(--copper);font-size:11px;letter-spacing:.12em">KNOWS YOUR BUSINESS</div>
+  <h3 style="font-size:20px;font-weight:600;margin:12px 0 10px">Trained on your own content</h3>
+  <p style="color:var(--muted);font-size:15px">We read your website, services, and FAQs so the assistant answers in your voice — accurately, never made up.</p></div><div class="reveal" style="border:1px solid var(--line);border-radius:16px;padding:30px;background:var(--ink-2)">
+  <div class="mono" style="color:var(--copper);font-size:11px;letter-spacing:.12em">TURNS VISITORS INTO LEADS</div>
+  <h3 style="font-size:20px;font-weight:600;margin:12px 0 10px">Captures leads, 24/7</h3>
+  <p style="color:var(--muted);font-size:15px">When a visitor shows interest, it collects their name and contact details and routes them to your team — even at 3am.</p></div><div class="reveal" style="border:1px solid var(--line);border-radius:16px;padding:30px;background:var(--ink-2)">
+  <div class="mono" style="color:var(--copper);font-size:11px;letter-spacing:.12em">REAL-TIME ALERTS</div>
+  <h3 style="font-size:20px;font-weight:600;margin:12px 0 10px">Instant hand-off</h3>
+  <p style="color:var(--muted);font-size:15px">Every captured lead is emailed to you the moment it happens, so a real person can follow up while the lead is warm.</p></div><div class="reveal" style="border:1px solid var(--line);border-radius:16px;padding:30px;background:var(--ink-2)">
+  <div class="mono" style="color:var(--copper);font-size:11px;letter-spacing:.12em">SAFE BY DESIGN</div>
+  <h3 style="font-size:20px;font-weight:600;margin:12px 0 10px">Knows its limits</h3>
+  <p style="color:var(--muted);font-size:15px">It never invents answers or gives advice it shouldn't — it offers to connect the visitor with your team instead.</p></div><div class="reveal" style="border:1px solid var(--line);border-radius:16px;padding:30px;background:var(--ink-2)">
+  <div class="mono" style="color:var(--copper);font-size:11px;letter-spacing:.12em">NO REBUILD NEEDED</div>
+  <h3 style="font-size:20px;font-weight:600;margin:12px 0 10px">One line to install</h3>
+  <p style="color:var(--muted);font-size:15px">Add a single snippet to your site — or we do it for you. Works with WordPress, Squarespace, Wix, Webflow, or custom sites.</p></div><div class="reveal" style="border:1px solid var(--line);border-radius:16px;padding:30px;background:var(--ink-2)">
+  <div class="mono" style="color:var(--copper);font-size:11px;letter-spacing:.12em">ONGOING CARE</div>
+  <h3 style="font-size:20px;font-weight:600;margin:12px 0 10px">Stays accurate</h3>
+  <p style="color:var(--muted);font-size:15px">We re-train it as your business changes and monitor it so answers stay correct over time.</p></div></div>
+  </div>
+</section>
+
+<div class="contour-div"><svg viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0 40 Q150 10 300 35 T600 30 T900 38 T1200 25"/><path d="M0 52 Q150 28 300 48 T600 44 T900 50 T1200 40"/></svg></div>
+
+<section>
+  <div class="wrap">
+    <div class="elev mono reveal">ELEV. 1500 — THE LEAD FLOW</div>
+    <h2 class="sec-h reveal d1">How a visitor becomes a booked call.</h2>
+    <div style="margin-top:50px;display:grid;gap:18px;max-width:760px">
+      <div class="reveal" style="display:flex;gap:20px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;padding:24px;background:var(--ink-2)">
+        <div class="mono" style="color:var(--cyan);font-size:22px;font-weight:700;flex:none">01</div>
+        <div><h3 style="font-size:18px;font-weight:600;margin-bottom:6px">Visitor asks a question</h3><p style="color:var(--muted);font-size:15px">Someone lands on your site — day or night — and asks the assistant about your services.</p></div></div><div class="reveal" style="display:flex;gap:20px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;padding:24px;background:var(--ink-2)">
+        <div class="mono" style="color:var(--cyan);font-size:22px;font-weight:700;flex:none">02</div>
+        <div><h3 style="font-size:18px;font-weight:600;margin-bottom:6px">It answers instantly</h3><p style="color:var(--muted);font-size:15px">The assistant replies accurately from your content, building trust in seconds.</p></div></div><div class="reveal" style="display:flex;gap:20px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;padding:24px;background:var(--ink-2)">
+        <div class="mono" style="color:var(--cyan);font-size:22px;font-weight:700;flex:none">03</div>
+        <div><h3 style="font-size:18px;font-weight:600;margin-bottom:6px">It captures their details</h3><p style="color:var(--muted);font-size:15px">When they show interest, it naturally collects their name, contact, and reason for reaching out.</p></div></div><div class="reveal" style="display:flex;gap:20px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;padding:24px;background:var(--ink-2)">
+        <div class="mono" style="color:var(--cyan);font-size:22px;font-weight:700;flex:none">04</div>
+        <div><h3 style="font-size:18px;font-weight:600;margin-bottom:6px">Your team gets the lead</h3><p style="color:var(--muted);font-size:15px">The lead lands in your inbox immediately, so a real person can call back while it's warm.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap" style="max-width:820px">
+    <div class="elev mono reveal">ELEV. 1900 — QUESTIONS</div>
+    <h2 class="sec-h reveal d1">Common questions.</h2>
+    <div style="margin-top:40px"><div class="reveal" style="border-bottom:1px solid var(--line);padding:24px 0">
+  <h3 style="font-size:18px;font-weight:600;margin-bottom:8px">Will it make things up?</h3>
+  <p style="color:var(--muted);font-size:15.5px">No. The assistant only answers from your approved website content. When it doesn't know, it says so and offers to connect the visitor with your team — which protects your reputation.</p></div><div class="reveal" style="border-bottom:1px solid var(--line);padding:24px 0">
+  <h3 style="font-size:18px;font-weight:600;margin-bottom:8px">Is my data safe?</h3>
+  <p style="color:var(--muted);font-size:15.5px">Each client's content is kept separate and private. We use providers with strong data terms and document exactly how data is handled. See our Privacy Policy.</p></div><div class="reveal" style="border-bottom:1px solid var(--line);padding:24px 0">
+  <h3 style="font-size:18px;font-weight:600;margin-bottom:8px">Do I have to change my website?</h3>
+  <p style="color:var(--muted);font-size:15.5px">No rebuild required. It's a single line of code that drops onto your existing site, whatever it's built with. We can install it for you.</p></div><div class="reveal" style="border-bottom:1px solid var(--line);padding:24px 0">
+  <h3 style="font-size:18px;font-weight:600;margin-bottom:8px">What happens when it can't help?</h3>
+  <p style="color:var(--muted);font-size:15.5px">It gracefully hands off — collecting the visitor's details so your team can follow up, instead of leaving them at a dead end.</p></div><div class="reveal" style="border-bottom:1px solid var(--line);padding:24px 0">
+  <h3 style="font-size:18px;font-weight:600;margin-bottom:8px">How fast can it go live?</h3>
+  <p style="color:var(--muted);font-size:15.5px">Usually within two weeks: we survey your needs, train it on your site, show you a working version, then install it.</p></div></div>
+  </div>
+</section>
+
+<section style="text-align:center;border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="elev mono reveal" style="justify-content:center">GET STARTED</div>
+    <h2 class="sec-h reveal d1" style="margin:0 auto;max-width:20ch">See it working on your own site — free.</h2>
+    <p class="sec-sub reveal d2" style="margin:22px auto 36px">We'll build a working demo trained on your website, no commitment. If you like it, we make it live.</p>
+    <div class="reveal d3" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+      <a href="contact.html" class="btn btn-solid btn-lg">Request a free demo</a>
+      <a href="services.html" class="btn btn-lg">Back to services</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot">
+    <div>
+      <a class="brand" href="index.html"><svg class="peak" viewBox="0 0 28 28"><path d="M2 22 L10 8 L14 14 L19 5 L26 22"/><path d="M6 22 L10 14 L13 18"/></svg><span>Northpeak<small>SOLUTIONS</small></span></a>
+      <p>We survey your business and build tailored AI into the tools you already run. Mapped to your terrain, measured by elevation gain.</p>
+    </div>
+    <div><h5>Company</h5>
+      <a class="lnk" href="services.html">Services</a>
+      <a class="lnk" href="about.html">About</a>
+      <a class="lnk" href="contact.html">Contact</a>
+    </div>
+    <div><h5>What we build</h5>
+      <a class="lnk" href="assistant.html">Custom assistants</a>
+      <a class="lnk" href="services.html">Workflow automation</a>
+      <a class="lnk" href="services.html">Document intelligence</a>
+    </div>
+    <div><h5>Base camp</h5>
+      <a class="lnk" href="mailto:support.northpeaksolutions@gmail.com">support.northpeaksolutions@gmail.com</a>
+      <a class="lnk" href="contact.html">Book a survey</a>
+      <a class="lnk" href="privacy.html">Privacy Policy</a>
+      <a class="lnk" href="terms.html">Terms of Service</a>
+    </div>
+  </div>
+  <div class="foot-end mono">
+    <span>&copy; 2026 NORTHPEAK SOLUTIONS</span>
+    <span>AI INTEGRATION &middot; AUTOMATION &middot; INTELLIGENT SEARCH</span>
+  </div>
+</footer>
+<script>/* ============ Northpeak shared scripts ============ */
+var scrollY=window.scrollY;
+addEventListener('scroll',function(){scrollY=window.scrollY;});
+
+/* nav scrolled state */
+(function(){
+  var nav=document.getElementById('nav');
+  if(nav)addEventListener('scroll',function(){nav.classList.toggle('scrolled',scrollY>40);});
+})();
+
+/* reveals */
+(function(){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.16});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+})();
+
+/* counters */
+(function(){
+  function count(el){
+    var target=parseFloat(el.dataset.count),suf=el.dataset.suffix||'',dur=1500,start=performance.now();
+    (function tick(now){var p=Math.min((now-start)/dur,1),e=1-Math.pow(1-p,3);
+      var v=target%1===0?Math.round(target*e):(target*e).toFixed(1);
+      el.innerHTML=v+'<span class="u">'+suf+'</span>';
+      if(p<1)requestAnimationFrame(tick);})(start);
+  }
+  var cio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){count(e.target);cio.unobserve(e.target);}});},{threshold:.6});
+  document.querySelectorAll('[data-count]').forEach(function(el){cio.observe(el);});
+})();
+
+/* topographic contour canvas — marching squares */
+function NPTopo(cv, opts){
+  opts=opts||{};
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ctx=cv.getContext('2d'),W,H,DPR,t=0;
+  var parallaxOn=opts.parallax!==false;
+  function size(){DPR=Math.min(devicePixelRatio,2);
+    var r=cv.getBoundingClientRect();
+    W=cv.width=Math.max(1,r.width*DPR);H=cv.height=Math.max(1,r.height*DPR);}
+  size();addEventListener('resize',size);
+  function field(x,y,t){
+    return Math.sin(x*0.55+t*0.6)*1.0+Math.cos(y*0.5-t*0.5)*1.0
+         +Math.sin((x+y)*0.32+t*0.4)*0.9+Math.cos(Math.hypot(x-5.5,y-3)*0.6-t*0.3)*1.1;
+  }
+  function ip(a,b,L){return (L-a)/((b-a)||1e-6);}
+  function frame(){
+    var gx=58,gy=Math.max(8,Math.round(58*H/W)),sx=W/(gx-1),sy=H/(gy-1);
+    var parallax=parallaxOn?scrollY*0.0011:0;
+    var vals=new Float32Array(gx*gy);
+    for(var j=0;j<gy;j++)for(var i=0;i<gx;i++)vals[j*gx+i]=field(i*0.16,j*0.16+parallax,t);
+    ctx.clearRect(0,0,W,H);
+    var ci=0;
+    for(var level=-3.2;level<=3.2;level+=0.4){
+      ctx.beginPath();
+      for(var j=0;j<gy-1;j++)for(var i=0;i<gx-1;i++){
+        var tl=vals[j*gx+i],tr=vals[j*gx+i+1],br=vals[(j+1)*gx+i+1],bl=vals[(j+1)*gx+i];
+        var c=(tl>level?8:0)|(tr>level?4:0)|(br>level?2:0)|(bl>level?1:0);
+        if(c===0||c===15)continue;
+        var x=i*sx,y=j*sy;
+        var pT={x:x+sx*ip(tl,tr,level),y:y},pR={x:x+sx,y:y+sy*ip(tr,br,level)},
+            pB={x:x+sx*ip(bl,br,level),y:y+sy},pL={x:x,y:y+sy*ip(tl,bl,level)};
+        var seg=[];
+        switch(c){case 1:case 14:seg=[pL,pB];break;case 2:case 13:seg=[pB,pR];break;
+          case 3:case 12:seg=[pL,pR];break;case 4:case 11:seg=[pT,pR];break;
+          case 5:seg=[pL,pT,pB,pR];break;case 6:case 9:seg=[pT,pB];break;
+          case 7:case 8:seg=[pL,pT];break;case 10:seg=[pT,pR,pL,pB];break;}
+        for(var s=0;s<seg.length;s+=2){ctx.moveTo(seg[s].x,seg[s].y);ctx.lineTo(seg[s+1].x,seg[s+1].y);}
+      }
+      var major=(ci%3===0);ci++;
+      var near=1-Math.min(Math.abs(level)/3.2,1);
+      ctx.strokeStyle=major?'rgba(95,212,214,'+(0.10+near*0.16)+')':'rgba(233,238,240,'+(0.035+near*0.05)+')';
+      ctx.lineWidth=DPR*(major?1.2:0.7);ctx.stroke();
+    }
+  }
+  function draw(){requestAnimationFrame(draw);t+=0.004;frame();}
+  if(!reduce)draw();else{t=0.7;frame();}
+}
+document.querySelectorAll('canvas[data-topo]').forEach(function(cv){NPTopo(cv,{});});
+</script>
+  <script src="https://northpeak-theta.vercel.app/embed.js" data-client="northpeak" data-title="Northpeak" data-accent="#5fd4d6" data-greeting="Hi! Ask me anything about Northpeak."></script>
+</body>
+</html>
