@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact — Northpeak Solutions</title>
-<meta name="description" content="Book a survey call with Northpeak Solutions. Tell us where your team loses the most time and we'll show you a working AI pilot, usually within two weeks.">
+<title>Insights — Northpeak Solutions</title>
+<meta name="description" content="What Northpeak builds: custom AI assistants, workflow automation, document intelligence, and intelligent search — integrated into the tools you already run.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>/* ============ Northpeak Solutions — shared styles ============ */
 :root{
@@ -103,93 +103,34 @@ footer{background:var(--ink);border-top:1px solid var(--line);padding:64px clamp
   <div class="nav-mid">
     <a href="index.html">Home</a>
     <a href="services.html">Services</a>
-    <a href="about.html">About</a>
-    <a href="insights.html">Insights</a>
-    <a href="contact.html" class="active">Contact</a>
+    <a href="about.html">About</a> <a href="insights.html" class="active">Insights</a>
+    <a href="contact.html">Contact</a>
   </div>
   <div class="nav-end"><a href="contact.html" class="btn btn-solid">Book a survey</a></div>
 </nav>
-
-<section class="page-hero" style="min-height:46vh">
-  <canvas data-topo></canvas><div class="veil"></div>
-  <div class="inner">
-    <div class="elev mono reveal">CONTACT</div>
-    <h1 class="reveal d1">Let's survey your <em>terrain</em>.</h1>
-    <p class="reveal d2">Tell us where your team loses the most time. We'll come back with how AI could remove it — and usually a working pilot within two weeks.</p>
-  </div>
+<section style="max-width:1100px;margin:0 auto;padding:140px 28px 40px">
+  <div class="mono" style="color:var(--cyan);font-size:12px;letter-spacing:.14em;margin-bottom:16px">INSIGHTS</div>
+  <h1 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,5vw,52px);line-height:1.08;letter-spacing:-.02em;max-width:18ch">Field notes on AI, websites, and winning more business.</h1>
+  <p style="font-size:18px;color:var(--muted);max-width:56ch;margin-top:18px">Practical takes for small businesses — no hype, just what actually moves the needle.</p>
 </section>
-
-<section style="padding-top:clamp(50px,7vh,90px)">
-  <div class="wrap" style="display:grid;grid-template-columns:1.2fr 1fr;gap:60px">
-    <div class="reveal">
-      <form id="np-form" onsubmit="return false">
-        <div style="display:grid;gap:20px">
-          <div style="position:absolute;left:-9999px" aria-hidden="true"><label>Leave blank</label><input name="website" tabindex="-1" autocomplete="off"></div>
-          <div><label class="mono" style="font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase">Name</label>
-            <input name="name" required style="width:100%;margin-top:8px;background:var(--ink-2);border:1px solid var(--line);border-radius:6px;padding:14px;color:var(--paper);font-family:inherit;font-size:15px"></div>
-          <div><label class="mono" style="font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase">Work email</label>
-            <input name="email" type="email" required style="width:100%;margin-top:8px;background:var(--ink-2);border:1px solid var(--line);border-radius:6px;padding:14px;color:var(--paper);font-family:inherit;font-size:15px"></div>
-          <div><label class="mono" style="font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase">Company / website</label>
-            <input name="company" style="width:100%;margin-top:8px;background:var(--ink-2);border:1px solid var(--line);border-radius:6px;padding:14px;color:var(--paper);font-family:inherit;font-size:15px"></div>
-          <div><label class="mono" style="font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase">Where does your team lose the most time?</label>
-            <textarea name="msg" rows="4" style="width:100%;margin-top:8px;background:var(--ink-2);border:1px solid var(--line);border-radius:6px;padding:14px;color:var(--paper);font-family:inherit;font-size:15px;resize:vertical"></textarea></div>
-          <button class="btn btn-solid btn-lg" id="np-submit" type="submit" style="justify-self:start;border:none">Send &rarr;</button>
-          <p id="np-note" class="mono" style="font-size:12px;color:var(--muted)">We&rsquo;ll reply within one business day. Your details are handled per our <a href="privacy.html" style="color:var(--cyan)">Privacy Policy</a>.</p>
-        </div>
-      </form>
-      <script>
-      (function(){
-        var form=document.getElementById('np-form');
-        var note=document.getElementById('np-note');
-        var btn=document.getElementById('np-submit');
-        if(!form)return;
-        form.addEventListener('submit',function(){
-          var data={
-            name:form.name.value, email:form.email.value,
-            company:form.company.value, message:form.msg.value,
-            website:form.website.value
-          };
-          btn.disabled=true; btn.textContent='Sending…';
-          fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
-            .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});})
-            .then(function(res){
-              if(res.ok&&res.j.ok){
-                form.style.display='none';
-                note.style.color='var(--cyan)';
-                note.innerHTML='Thanks &mdash; your message is in. We&rsquo;ll be in touch within one business day.';
-                note.style.display='block';
-                note.parentNode.insertBefore(note,form);
-              }else{
-                btn.disabled=false; btn.textContent='Send →';
-                note.style.color='#ff8a8a';
-                note.textContent=(res.j&&res.j.error)||'Something went wrong. Please email support.northpeaksolutions@gmail.com.';
-              }
-            })
-            .catch(function(){
-              btn.disabled=false; btn.textContent='Send →';
-              note.style.color='#ff8a8a';
-              note.innerHTML='Network error. Please email <a href="mailto:support.northpeaksolutions@gmail.com" style="color:var(--cyan)">support.northpeaksolutions@gmail.com</a>.';
-            });
-        });
-      })();
-      </script>
-    </div>
-    <div class="reveal d1">
-      <div style="border:1px solid var(--line);border-radius:16px;padding:34px;background:var(--ink-2)">
-        <div class="mono" style="color:var(--cyan);font-size:12px;letter-spacing:.12em">DIRECT</div>
-        <h3 style="font-size:20px;font-weight:600;margin:14px 0 8px">Prefer email?</h3>
-        <p style="color:var(--muted);font-size:15px;margin-bottom:8px">Reach us any time at</p>
-        <a href="mailto:support.northpeaksolutions@gmail.com" style="color:var(--cyan);font-size:16px;font-family:'JetBrains Mono',monospace">support.northpeaksolutions@gmail.com</a>
-        <hr style="border:none;border-top:1px solid var(--line);margin:26px 0">
-        <div class="mono" style="color:var(--copper);font-size:12px;letter-spacing:.12em">WHAT HAPPENS NEXT</div>
-        <div style="margin-top:16px;display:grid;gap:14px">
-          <div style="display:flex;gap:12px;align-items:flex-start"><span class="mono" style="color:var(--cyan)">01</span><span style="font-size:14.5px;color:#cdd6dc">A short survey call to find your costliest repetitive work.</span></div><div style="display:flex;gap:12px;align-items:flex-start"><span class="mono" style="color:var(--cyan)">02</span><span style="font-size:14.5px;color:#cdd6dc">We build a working pilot on your real content.</span></div><div style="display:flex;gap:12px;align-items:flex-start"><span class="mono" style="color:var(--cyan)">03</span><span style="font-size:14.5px;color:#cdd6dc">You see it live, then decide whether to roll it out.</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
+<section style="max-width:1100px;margin:0 auto;padding:20px 28px 90px">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px"><a href="after-hours-leads.html" class="reveal" style="display:block;border:1px solid var(--line);border-radius:16px;padding:30px;background:var(--ink-2,#0f161c);text-decoration:none;transition:border-color .3s">
+      <div class="mono" style="color:var(--copper);font-size:11px;letter-spacing:.12em;margin-bottom:14px">LEAD CAPTURE · 4 min read</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:23px;font-weight:600;line-height:1.2;margin-bottom:12px;color:var(--paper,#e9eef0);letter-spacing:-.01em">The Lead You Lose at 9 PM: Why After-Hours Inquiries Walk Away</h2>
+      <p style="color:var(--muted);font-size:15px;line-height:1.6;margin-bottom:16px">Most small businesses are closed when their customers are deciding. Here's what that silence costs — and the quiet fix.</p>
+      <span style="color:var(--cyan);font-size:14px;font-family:'JetBrains Mono',monospace">Read &rarr;</span>
+    </a><a href="signs-website-costing-leads.html" class="reveal" style="display:block;border:1px solid var(--line);border-radius:16px;padding:30px;background:var(--ink-2,#0f161c);text-decoration:none;transition:border-color .3s">
+      <div class="mono" style="color:var(--copper);font-size:11px;letter-spacing:.12em;margin-bottom:14px">WEBSITE HEALTH · 5 min read</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:23px;font-weight:600;line-height:1.2;margin-bottom:12px;color:var(--paper,#e9eef0);letter-spacing:-.01em">5 Signs Your Website Is Quietly Costing You Leads</h2>
+      <p style="color:var(--muted);font-size:15px;line-height:1.6;margin-bottom:16px">Most underperforming small-business sites aren't broken. They're leaking — slowly, invisibly, in ways that are easy to fix once you see them.</p>
+      <span style="color:var(--cyan);font-size:14px;font-family:'JetBrains Mono',monospace">Read &rarr;</span>
+    </a><a href="ai-small-business-where-to-start.html" class="reveal" style="display:block;border:1px solid var(--line);border-radius:16px;padding:30px;background:var(--ink-2,#0f161c);text-decoration:none;transition:border-color .3s">
+      <div class="mono" style="color:var(--copper);font-size:11px;letter-spacing:.12em;margin-bottom:14px">AI STRATEGY · 5 min read</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:23px;font-weight:600;line-height:1.2;margin-bottom:12px;color:var(--paper,#e9eef0);letter-spacing:-.01em">AI for Small Business: Where It Actually Helps (and Where It Doesn't)</h2>
+      <p style="color:var(--muted);font-size:15px;line-height:1.6;margin-bottom:16px">Cutting through the hype. A practical look at where AI genuinely saves a small business time and money — and where it's just noise.</p>
+      <span style="color:var(--cyan);font-size:14px;font-family:'JetBrains Mono',monospace">Read &rarr;</span>
+    </a></div>
 </section>
-
 <footer>
   <div class="foot">
     <div>

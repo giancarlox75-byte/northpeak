@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact — Northpeak Solutions</title>
-<meta name="description" content="Book a survey call with Northpeak Solutions. Tell us where your team loses the most time and we'll show you a working AI pilot, usually within two weeks.">
+<title>Website Refresh — Northpeak Solutions</title>
+<meta name="description" content="What Northpeak builds: custom AI assistants, workflow automation, document intelligence, and intelligent search — integrated into the tools you already run.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>/* ============ Northpeak Solutions — shared styles ============ */
 :root{
@@ -103,93 +103,78 @@ footer{background:var(--ink);border-top:1px solid var(--line);padding:64px clamp
   <div class="nav-mid">
     <a href="index.html">Home</a>
     <a href="services.html">Services</a>
-    <a href="about.html">About</a>
-    <a href="insights.html">Insights</a>
-    <a href="contact.html" class="active">Contact</a>
+    <a href="about.html">About</a> <a href="insights.html">Insights</a>
+    <a href="contact.html">Contact</a>
   </div>
   <div class="nav-end"><a href="contact.html" class="btn btn-solid">Book a survey</a></div>
 </nav>
-
-<section class="page-hero" style="min-height:46vh">
+<section class="page-hero">
   <canvas data-topo></canvas><div class="veil"></div>
   <div class="inner">
-    <div class="elev mono reveal">CONTACT</div>
-    <h1 class="reveal d1">Let's survey your <em>terrain</em>.</h1>
-    <p class="reveal d2">Tell us where your team loses the most time. We'll come back with how AI could remove it — and usually a working pilot within two weeks.</p>
-  </div>
-</section>
-
-<section style="padding-top:clamp(50px,7vh,90px)">
-  <div class="wrap" style="display:grid;grid-template-columns:1.2fr 1fr;gap:60px">
-    <div class="reveal">
-      <form id="np-form" onsubmit="return false">
-        <div style="display:grid;gap:20px">
-          <div style="position:absolute;left:-9999px" aria-hidden="true"><label>Leave blank</label><input name="website" tabindex="-1" autocomplete="off"></div>
-          <div><label class="mono" style="font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase">Name</label>
-            <input name="name" required style="width:100%;margin-top:8px;background:var(--ink-2);border:1px solid var(--line);border-radius:6px;padding:14px;color:var(--paper);font-family:inherit;font-size:15px"></div>
-          <div><label class="mono" style="font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase">Work email</label>
-            <input name="email" type="email" required style="width:100%;margin-top:8px;background:var(--ink-2);border:1px solid var(--line);border-radius:6px;padding:14px;color:var(--paper);font-family:inherit;font-size:15px"></div>
-          <div><label class="mono" style="font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase">Company / website</label>
-            <input name="company" style="width:100%;margin-top:8px;background:var(--ink-2);border:1px solid var(--line);border-radius:6px;padding:14px;color:var(--paper);font-family:inherit;font-size:15px"></div>
-          <div><label class="mono" style="font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase">Where does your team lose the most time?</label>
-            <textarea name="msg" rows="4" style="width:100%;margin-top:8px;background:var(--ink-2);border:1px solid var(--line);border-radius:6px;padding:14px;color:var(--paper);font-family:inherit;font-size:15px;resize:vertical"></textarea></div>
-          <button class="btn btn-solid btn-lg" id="np-submit" type="submit" style="justify-self:start;border:none">Send &rarr;</button>
-          <p id="np-note" class="mono" style="font-size:12px;color:var(--muted)">We&rsquo;ll reply within one business day. Your details are handled per our <a href="privacy.html" style="color:var(--cyan)">Privacy Policy</a>.</p>
-        </div>
-      </form>
-      <script>
-      (function(){
-        var form=document.getElementById('np-form');
-        var note=document.getElementById('np-note');
-        var btn=document.getElementById('np-submit');
-        if(!form)return;
-        form.addEventListener('submit',function(){
-          var data={
-            name:form.name.value, email:form.email.value,
-            company:form.company.value, message:form.msg.value,
-            website:form.website.value
-          };
-          btn.disabled=true; btn.textContent='Sending…';
-          fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
-            .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});})
-            .then(function(res){
-              if(res.ok&&res.j.ok){
-                form.style.display='none';
-                note.style.color='var(--cyan)';
-                note.innerHTML='Thanks &mdash; your message is in. We&rsquo;ll be in touch within one business day.';
-                note.style.display='block';
-                note.parentNode.insertBefore(note,form);
-              }else{
-                btn.disabled=false; btn.textContent='Send →';
-                note.style.color='#ff8a8a';
-                note.textContent=(res.j&&res.j.error)||'Something went wrong. Please email support.northpeaksolutions@gmail.com.';
-              }
-            })
-            .catch(function(){
-              btn.disabled=false; btn.textContent='Send →';
-              note.style.color='#ff8a8a';
-              note.innerHTML='Network error. Please email <a href="mailto:support.northpeaksolutions@gmail.com" style="color:var(--cyan)">support.northpeaksolutions@gmail.com</a>.';
-            });
-        });
-      })();
-      </script>
-    </div>
-    <div class="reveal d1">
-      <div style="border:1px solid var(--line);border-radius:16px;padding:34px;background:var(--ink-2)">
-        <div class="mono" style="color:var(--cyan);font-size:12px;letter-spacing:.12em">DIRECT</div>
-        <h3 style="font-size:20px;font-weight:600;margin:14px 0 8px">Prefer email?</h3>
-        <p style="color:var(--muted);font-size:15px;margin-bottom:8px">Reach us any time at</p>
-        <a href="mailto:support.northpeaksolutions@gmail.com" style="color:var(--cyan);font-size:16px;font-family:'JetBrains Mono',monospace">support.northpeaksolutions@gmail.com</a>
-        <hr style="border:none;border-top:1px solid var(--line);margin:26px 0">
-        <div class="mono" style="color:var(--copper);font-size:12px;letter-spacing:.12em">WHAT HAPPENS NEXT</div>
-        <div style="margin-top:16px;display:grid;gap:14px">
-          <div style="display:flex;gap:12px;align-items:flex-start"><span class="mono" style="color:var(--cyan)">01</span><span style="font-size:14.5px;color:#cdd6dc">A short survey call to find your costliest repetitive work.</span></div><div style="display:flex;gap:12px;align-items:flex-start"><span class="mono" style="color:var(--cyan)">02</span><span style="font-size:14.5px;color:#cdd6dc">We build a working pilot on your real content.</span></div><div style="display:flex;gap:12px;align-items:flex-start"><span class="mono" style="color:var(--cyan)">03</span><span style="font-size:14.5px;color:#cdd6dc">You see it live, then decide whether to roll it out.</span></div>
-        </div>
-      </div>
+    <div class="elev mono reveal">SERVICE · WEBSITE REFRESH</div>
+    <h1 class="reveal d1">An outdated site is <em>quietly turning customers away</em>. Let's fix that.</h1>
+    <p class="reveal d2">We modernize aging websites into fast, mobile-first sites that actually capture leads — and we build an AI assistant in from day one. You keep your brand and your reputation; you lose the dated feel that's costing you work.</p>
+    <div class="reveal d3" style="margin-top:28px;display:flex;gap:16px;flex-wrap:wrap">
+      <a href="contact.html" class="btn btn-solid btn-lg">Get a free assessment</a>
+      <a href="#what" class="btn btn-lg">What's included</a>
     </div>
   </div>
 </section>
 
+<section id="what">
+  <div class="wrap">
+    <div class="elev mono reveal">ELEV. 0210 — WHAT'S INCLUDED</div>
+    <h2 class="sec-h reveal d1">A site that works as hard as you do.</h2>
+    <p class="sec-sub reveal d2">Most aging sites aren't broken — they're just slow, hard to use on a phone, and silent after hours. We fix all three.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;margin-top:50px">
+      <div class="reveal" style="border:1px solid var(--line);border-radius:14px;padding:26px;background:var(--ink-2)">
+        <h3 style="font-size:19px;font-weight:600;margin-bottom:8px">Modern, mobile-first design</h3>
+        <p style="color:var(--muted);font-size:15px">A clean, current design that looks right on the phones where most of your visitors actually are.</p></div><div class="reveal" style="border:1px solid var(--line);border-radius:14px;padding:26px;background:var(--ink-2)">
+        <h3 style="font-size:19px;font-weight:600;margin-bottom:8px">Built for speed</h3>
+        <p style="color:var(--muted);font-size:15px">Fast load times, because every extra second quietly costs you visitors and search ranking.</p></div><div class="reveal" style="border:1px solid var(--line);border-radius:14px;padding:26px;background:var(--ink-2)">
+        <h3 style="font-size:19px;font-weight:600;margin-bottom:8px">Clear calls to action</h3>
+        <p style="color:var(--muted);font-size:15px">Every page makes the next step obvious — call, book, or request a quote — so visitors don't drift off.</p></div><div class="reveal" style="border:1px solid var(--line);border-radius:14px;padding:26px;background:var(--ink-2)">
+        <h3 style="font-size:19px;font-weight:600;margin-bottom:8px">AI assistant included</h3>
+        <p style="color:var(--muted);font-size:15px">Your new site comes with an assistant that answers questions and captures leads 24/7, from day one.</p></div><div class="reveal" style="border:1px solid var(--line);border-radius:14px;padding:26px;background:var(--ink-2)">
+        <h3 style="font-size:19px;font-weight:600;margin-bottom:8px">Keep your brand</h3>
+        <p style="color:var(--muted);font-size:15px">We modernize the feel without throwing away the identity and trust you've already built.</p></div><div class="reveal" style="border:1px solid var(--line);border-radius:14px;padding:26px;background:var(--ink-2)">
+        <h3 style="font-size:19px;font-weight:600;margin-bottom:8px">Easy to maintain</h3>
+        <p style="color:var(--muted);font-size:15px">We hand you something clean and current — and we're here to keep it that way.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="contour-div"><svg viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0 40 Q150 10 300 35 T600 30 T900 38 T1200 25"/><path d="M0 52 Q150 28 300 48 T600 44 T900 50 T1200 40"/></svg></div>
+
+<section>
+  <div class="wrap">
+    <div class="elev mono reveal">ELEV. 0640 — WHO IT'S FOR</div>
+    <h2 class="sec-h reveal d1">If any of these sound familiar, it's time.</h2>
+    <div style="margin-top:50px;display:grid;gap:18px;max-width:760px">
+      <div class="reveal" style="display:flex;gap:20px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;padding:24px;background:var(--ink-2)">
+        <div class="mono" style="color:var(--cyan);font-size:22px;font-weight:700;flex:none">01</div>
+        <div><h3 style="font-size:18px;font-weight:600;margin-bottom:6px">Your site looks like it's from another era</h3><p style="color:var(--muted);font-size:15px">Design dates a business fast. A modern site signals you're active, serious, and still the right call.</p></div></div><div class="reveal" style="display:flex;gap:20px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;padding:24px;background:var(--ink-2)">
+        <div class="mono" style="color:var(--cyan);font-size:22px;font-weight:700;flex:none">02</div>
+        <div><h3 style="font-size:18px;font-weight:600;margin-bottom:6px">It's hard to use on a phone</h3><p style="color:var(--muted);font-size:15px">Most visitors are on mobile. If your site is hard to use there, you're losing them before they start.</p></div></div><div class="reveal" style="display:flex;gap:20px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;padding:24px;background:var(--ink-2)">
+        <div class="mono" style="color:var(--cyan);font-size:22px;font-weight:700;flex:none">03</div>
+        <div><h3 style="font-size:18px;font-weight:600;margin-bottom:6px">It doesn't bring in leads</h3><p style="color:var(--muted);font-size:15px">A site should do more than exist — it should capture the people who visit. Many older sites simply don't.</p></div></div><div class="reveal" style="display:flex;gap:20px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;padding:24px;background:var(--ink-2)">
+        <div class="mono" style="color:var(--cyan);font-size:22px;font-weight:700;flex:none">04</div>
+        <div><h3 style="font-size:18px;font-weight:600;margin-bottom:6px">There's no way to get instant answers</h3><p style="color:var(--muted);font-size:15px">Add an assistant and your site goes from a brochure to a 24/7 front desk that captures real leads.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section style="text-align:center;border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="elev mono reveal" style="justify-content:center">GET STARTED</div>
+    <h2 class="sec-h reveal d1" style="margin:0 auto;max-width:20ch">Let's see what your site could be.</h2>
+    <p class="sec-sub reveal d2" style="margin:22px auto 36px">Tell us about your current site and we'll give you an honest assessment — free, no commitment.</p>
+    <div class="reveal d3" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+      <a href="contact.html" class="btn btn-solid btn-lg">Get a free assessment</a>
+      <a href="services.html" class="btn btn-lg">Back to services</a>
+    </div>
+  </div>
+</section>
 <footer>
   <div class="foot">
     <div>
