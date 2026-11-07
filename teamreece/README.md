@@ -22,7 +22,7 @@ Edit **`config.js`** and the whole site updates:
 ## What's interactive
 
 - **Hero:** animated starfield with shooting stars, a logo that draws itself in, a live election countdown, and the Capitol with a tree line
-- **Platform:** 11 issues with category filters. Each card opens a full plan (The Problem, The Plan, Why It Matters) with share and next-issue buttons
+- **Platform:** 12 issues across 6 pillars with category filters. Each card opens a full plan (The Problem, The Plan, Why It Matters) with share and next-issue buttons
 - **Your Voice:** visitors rank their top 3 issues, see the results bars, and share their picks
 - **Region map:** 8 clickable Michigan regions with local focus and key issues. "Organize here" pre-fills the volunteer form
 - **Events:** RSVP toggle and one-tap **add to calendar** (.ics download)
@@ -32,7 +32,7 @@ Edit **`config.js`** and the whole site updates:
 
 ## Platform content
 
-The platform is built around Kevin's top priorities, marked `top: true` and shown first with a "Top priority" badge: **AI & tech safety, Michigan innovation, strong schools, affordable basics, and higher wages**. Supporting issues are housing, health and wellness, access to justice, open government, and clean water. They're all in the `ISSUES` array in `app.js`. Review every bullet so each one reflects positions you're ready to defend.
+The platform is built around Kevin's top priorities, marked `top: true` and shown first with a "Top priority" badge: **AI & your rights, good-paying jobs, affordable housing, everyday costs, public schools, and open records**. The six pillars (used as filters) are affordability, jobs & AI, education, infrastructure & energy, healthcare, and accountability. They're all in the `ISSUES` array in `app.js`. Review every bullet so each one reflects positions you're ready to defend.
 
 ## Meet Kevin
 
