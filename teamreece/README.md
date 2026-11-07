@@ -1,57 +1,115 @@
-# Team Reece: Campaign Website
+# Team Reece: Campaign Website + Backend
 
 The campaign site for **Kevin Reece**: born and raised in Flint, WMU political science graduate, building a stronger Michigan.
 
-A campaign platform site built on the **@officialreecehq** branding: black and navy, white, an electric "HERE." blue, the R-and-star mark, the Michigan outline and the Capitol skyline.
+It has three parts:
+- **The public website** (`public/`), built on the @officialreecehq branding
+- **A backend** (`server.js`) that saves every form submission to a database
+- **Campaign HQ** (`/admin`), a password-protected dashboard for reading and managing everything that comes in
 
-It's plain HTML, CSS and JS with no build step. Open `index.html` or deploy the folder to any static host (Vercel, Netlify, GitHub Pages).
+## What gets saved
 
-## Once you pick an office
+| Form on the site | Saved as | Where you see it |
+|---|---|---|
+| **Join the Team** (3-step volunteer form) | Volunteer: name, email, phone, ZIP, region, roles, availability, note | HQ → Volunteers |
+| **Talk to Kevin** (comments, questions, event invites, press) | Message, with topic | HQ → Messages (a badge shows how many are new) |
+| **Newsletter** (footer, plus opt-in boxes on the other forms) | Subscriber, with an unsubscribe link | HQ → Newsletter |
+| **Event RSVP** | RSVP with guest count, one per person per event | HQ → RSVPs (head count per event) |
+| **What Matters Most** poll | Anonymous vote, no name or email | HQ → Priorities, and live results on the site |
 
-Edit **`config.js`** and the whole site updates:
+In Campaign HQ you can **search**, **set a status** (for example new → replied → archived), **delete** entries, **reply** by email in one click, and **export any list to CSV** for Excel, Google Sheets or a voter CRM.
 
-| Field | What it does |
+**Email (optional, through [Resend](https://resend.com)):**
+- You get an alert email for every new message, volunteer, subscriber and RSVP. Hitting Reply goes straight to that person.
+- You can **write and send newsletters** from HQ → Newsletter. Each subscriber's first name is added at the top, and every email has a personal unsubscribe link.
+- Optionally, people get an automatic "thanks, we got it" email.
+
+**Spam and security:** a hidden honeypot field catches bots, and every form is rate-limited. Admin passwords are hashed with bcrypt, logins use signed cookies, cross-site requests are blocked, and CSV exports are protected against spreadsheet formula tricks.
+
+---
+
+## Put it online (about 20 minutes)
+
+### 1. Create the project on Vercel
+1. Sign in at [vercel.com](https://vercel.com) with GitHub.
+2. **Add New → Project** → import the `northpeak` repo.
+3. Set **Root Directory** to `teamreece`, then click **Deploy**.
+
+### 2. Add the database (free)
+1. In the Vercel project: **Storage → Create Database → Neon (Postgres)**, and connect it to the project.
+2. Vercel adds `DATABASE_URL` for you. The tables are created automatically on first visit.
+
+### 3. Add these environment variables
+In **Settings → Environment Variables**:
+
+| Name | Value |
 |---|---|
-| `office`, `district` | Leave blank and the site reads "Team Reece". Set them (e.g. `"State House"`, `"District 42"`) and it reads "Reece for State House · District 42" in the hero, the page title and the FAQ |
-| `firstName` | Adds your first name to the signature and FAQ |
-| `electionDate` | Drives the countdown. Next Michigan generals: **2028-11-07** (State House, U.S. House) and **2030-11-05** (Governor, State Senate, U.S. Senate) |
-| `donateUrl` | Your ActBlue, WinRed or processor link. While it's blank, the Donate button shows "coming soon" |
-| `paidFor` | The legal "Paid for by…" line. Required once you form a committee |
-| `events` | The event list. Past events hide automatically |
+| `SESSION_SECRET` | A long random string, e.g. from `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` |
+| `SETUP_KEY` | Any secret word only you know. You delete it after step 4 |
+| `SITE_URL` | Your site address, e.g. `https://teamreece.com` |
 
-## What's interactive
+Then go to **Deployments → ⋯ → Redeploy**.
 
-- **Hero:** animated starfield with shooting stars, a logo that draws itself in, a live election countdown, and the Capitol with a tree line
-- **Platform:** 12 issues across 6 pillars with category filters. Each card opens a full plan (The Problem, The Plan, Why It Matters) with share and next-issue buttons
-- **Your Voice:** visitors rank their top 3 issues, see the results bars, and share their picks
-- **Region map:** 8 clickable Michigan regions with local focus and key issues. "Organize here" pre-fills the volunteer form
-- **Events:** RSVP toggle and one-tap **add to calendar** (.ics download)
-- **Join:** a 3-step volunteer form with validation, ending in confetti and a "Founding Member" card
-- **Donate:** amount picker, one-time or monthly, and a live "your impact" message
-- **Newsletter, FAQ, back-to-top, mobile menu,** and support for reduced motion
+### 4. Create your admin login
+1. Visit `https://YOUR-SITE/setup?key=YOUR_SETUP_KEY`.
+2. Choose a username and a password (10+ characters).
+3. Sign in at `https://YOUR-SITE/admin`.
+4. **Delete `SETUP_KEY`** in Vercel and redeploy, which turns the setup page off.
 
-## Platform content
+### 5. Turn on email (recommended)
+1. Create a free account at [resend.com](https://resend.com) and **verify your domain** (e.g. teamreece.com). Resend walks you through it.
+2. Add these environment variables, then redeploy:
 
-The platform is built around Kevin's top priorities, marked `top: true` and shown first with a "Top priority" badge: **AI & your rights, good-paying jobs, affordable housing, everyday costs, public schools, and open records**. The six pillars (used as filters) are affordability, jobs & AI, education, infrastructure & energy, healthcare, and accountability. They're all in the `ISSUES` array in `app.js`. Review every bullet so each one reflects positions you're ready to defend.
+| Name | Value |
+|---|---|
+| `RESEND_API_KEY` | From Resend → API Keys |
+| `NOTIFY_EMAIL` | Where alerts go (e.g. your Gmail). Separate several with commas |
+| `MAIL_FROM` | `Team Reece <hello@teamreece.com>` (must be on your verified domain) |
+| `SEND_CONFIRMATIONS` | `1` to send automatic "thanks" emails, or `0` to skip them |
 
-## Meet Kevin
+### 6. Connect your domain
+Buy a domain (e.g. teamreece.com), then add it in Vercel → **Settings → Domains**. Update `SITE_URL` to match.
 
-The bio and timeline are in the `#about` section of `index.html`. To add a photo, put it at `assets/kevin.jpg` and replace the `KR` placeholder inside `.portrait` with `<img src="assets/kevin.jpg" alt="Kevin Reece">`.
+---
 
-## Data storage
+## Run it on your computer
 
-Right now, sign-ups, newsletter emails, RSVPs and priority votes are saved **in each visitor's own browser** (localStorage). Visit `index.html?admin` to see and **export to CSV** the sign-ups made on that device.
+```bash
+cd teamreece
+npm install
+cp .env.example .env              # then set SESSION_SECRET in .env
+npm run init-admin -- kevin yourLongPassword
+npm run dev                        # http://localhost:3000  ·  admin: /admin
+```
 
-Before launch, connect the forms to a real backend so you collect everyone's submissions (e.g. Formspree, Airtable, or the Neon database already used by `northpeakapp`). Until then, the "Your Voice" results only reflect votes from the same browser.
+Locally, entries are saved to `data.json`, so no database is needed. `npm test` runs the backend tests. To run them against a real Postgres, set `TEST_DATABASE_URL`.
+
+## Customizing
+
+- **`public/config.js`**: office, district, election date, donate link, email, the "Paid for by" line, and events. The whole site updates from here.
+- **Platform:** the `ISSUES` array in `public/app.js`. If you add or rename an issue, also update `ISSUE_LABELS` in `views/admin.js` so the dashboard shows its name.
+- **Bio and photo:** the `#about` section of `public/index.html`. Put a photo at `public/assets/kevin.jpg` and replace the `KR` placeholder with `<img src="assets/kevin.jpg" alt="Kevin Reece">`.
+- **Privacy policy:** `public/privacy.html`. This is a template, so have it reviewed before launch.
+
+## Files
+
+```
+server.js              Express app: public API, admin, static site
+src/db.js              Storage: Postgres in production (Neon or any Postgres), data.json locally
+src/auth.js            Admin login (bcrypt + signed cookie) and cross-site protection
+src/mail.js            Resend email: alerts, confirmations, newsletters
+views/admin.js         Campaign HQ dashboard pages
+scripts/init-admin.js  Create or reset the admin login from the terminal
+test/api.test.js       End-to-end backend tests
+public/                The website (index, privacy, 404, styles, app, config)
+```
 
 ## Before you go live
 
-- [ ] Choose the office and fill in `config.js`
-- [ ] Form a committee and update `paidFor` with its exact name and address
+- [ ] Deploy, add the database, and create your admin login (steps 1–4)
+- [ ] Set up email (step 5) so you never miss a message
+- [ ] Set `email` and `paidFor` in `public/config.js` (the committee's exact legal name once you form it)
 - [ ] Add a photo of Kevin
-- [ ] Review the platform bullets and edit any you wouldn't defend
+- [ ] Review the platform text, the privacy policy and the events
+- [ ] Add a donation processor link (`donateUrl`)
 - [ ] Optional: let Senator-elect Julie Rogers know her name appears in your bio
-- [ ] Connect the forms to a backend
-- [ ] Add a donation processor link
-- [ ] Replace the placeholder events with real ones
-- [ ] Check Michigan Bureau of Elections filing deadlines and requirements for your office

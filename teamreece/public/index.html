@@ -46,12 +46,12 @@
       <nav aria-label="Main">
         <ul class="nav-links" id="navLinks">
           <li><a href="#about">Meet Kevin</a></li>
-          <li><a href="#movement">Movement</a></li>
           <li><a href="#platform">Platform</a></li>
           <li><a href="#priorities">Your Voice</a></li>
           <li><a href="#map">Map</a></li>
           <li><a href="#events">Events</a></li>
           <li><a href="#join">Join</a></li>
+          <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
       <div class="nav-cta">
@@ -207,7 +207,6 @@
             <div class="prio-actions">
               <button class="btn btn-primary" id="prioSubmit" disabled>Lock In My Priorities</button>
               <button class="btn btn-ghost" id="prioShare" hidden>Share</button>
-              <button class="btn btn-ghost" id="prioReset" hidden>Start Over</button>
             </div>
           </div>
         </div>
@@ -263,6 +262,7 @@
 
         <div class="form-card reveal">
           <form id="joinForm" novalidate>
+            <div class="hp" aria-hidden="true"><label>Leave this empty<input name="website" tabindex="-1" autocomplete="off" /></label></div>
             <div class="progress" aria-hidden="true"><i class="done"></i><i></i><i></i></div>
 
             <fieldset class="step active" data-step="1">
@@ -305,7 +305,8 @@
                 <label class="check"><input type="checkbox" name="when" value="Daytime" /><span>Daytime</span></label>
                 <label class="check"><input type="checkbox" name="when" value="Remote only" /><span>Remote only</span></label>
               </div>
-              <div class="field"><label for="fMsg">What should Kevin know? (optional)</label><textarea id="fMsg" name="message" rows="3" placeholder="The issue that keeps you up at night, an idea, a question…"></textarea></div>
+              <div class="field"><label for="fMsg">What should Kevin know? (optional)</label><textarea id="fMsg" name="message" rows="3" maxlength="3000" placeholder="The issue that keeps you up at night, an idea, a question…"></textarea></div>
+              <label class="check"><input type="checkbox" name="updates" checked /><span>Email me campaign news and events</span></label>
             </fieldset>
 
             <div class="form-nav" id="formNav">
@@ -358,6 +359,48 @@
       </div>
     </section>
 
+    <!-- ================= CONTACT ================= -->
+    <section class="section contact" id="contact">
+      <div class="wrap contact-grid">
+        <div class="reveal">
+          <span class="eyebrow">Talk to Kevin</span>
+          <h2 class="h-display" style="margin:16px 0 22px">Your Voice.<br /><span class="blue">Kevin Reads It.</span></h2>
+          <p class="lede">Share a comment, ask a question, tell us what's happening in your community, or invite Kevin to an event. Every message goes straight to the campaign.</p>
+          <div class="contact-cards">
+            <a href="#contact" class="contact-card" data-topic="Comment"><b>Share a comment</b><span>Ideas, concerns, or what matters in your neighborhood</span></a>
+            <a href="#contact" class="contact-card" data-topic="Event invitation"><b>Invite Kevin</b><span>Community meetings, schools, businesses, block parties</span></a>
+            <a href="#contact" class="contact-card" data-topic="Press / media"><b>Press &amp; media</b><span>Interviews, statements, and media requests</span></a>
+          </div>
+        </div>
+        <div class="form-card reveal">
+          <form id="contactForm" novalidate>
+            <p class="step-title">Send a message</p>
+            <p class="step-sub">We read every message and reply as quickly as we can.</p>
+            <div class="field-row">
+              <div class="field"><label for="cName">Your name</label><input id="cName" name="name" autocomplete="name" required maxlength="120" /><span class="err">Required</span></div>
+              <div class="field"><label for="cEmail">Email</label><input id="cEmail" name="email" type="email" autocomplete="email" required maxlength="200" /><span class="err">Enter a valid email</span></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="cTopic">Topic</label>
+                <select id="cTopic" name="topic">
+                  <option>Comment</option><option>Question</option><option>Event invitation</option><option>Press / media</option><option>Volunteer question</option><option>Other</option>
+                </select></div>
+              <div class="field"><label for="cZip">ZIP (optional)</label><input id="cZip" name="zip" inputmode="numeric" maxlength="5" autocomplete="postal-code" /></div>
+            </div>
+            <div class="field"><label for="cMsg">Message</label><textarea id="cMsg" name="message" rows="5" required maxlength="5000" placeholder="What's on your mind?"></textarea><span class="err">Write a message</span></div>
+            <label class="check" style="margin-bottom:18px"><input type="checkbox" name="updates" /><span>Also send me campaign updates</span></label>
+            <button class="btn btn-primary" type="submit" style="width:100%">Send to Kevin →</button>
+          </form>
+          <div class="success" id="contactSuccess">
+            <div class="big-star">★</div>
+            <h3>Message Sent</h3>
+            <p>Thank you for reaching out. The team will get back to you soon.</p>
+            <button class="btn btn-ghost btn-sm" id="contactAgain" style="margin-top:22px">Send another message</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ================= FAQ ================= -->
     <section class="section" id="faq" style="padding-top:20px">
       <div class="wrap">
@@ -389,17 +432,6 @@
       </div>
     </section>
 
-    <!-- ================= ADMIN (visit ?admin) ================= -->
-    <section class="admin wrap" id="admin">
-      <span class="eyebrow">Campaign HQ</span>
-      <h2 class="h-display" style="margin:12px 0">Sign-ups <span class="blue">(this device)</span></h2>
-      <p class="lede">Submissions are stored in this browser until a backend is connected. Export to CSV to import into your CRM.</p>
-      <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
-        <button class="btn btn-primary btn-sm" id="exportCsv">Export CSV</button>
-        <button class="btn btn-ghost btn-sm" id="clearData">Clear data</button>
-      </div>
-      <div class="table-scroll"><table id="adminTable"></table></div>
-    </section>
   </main>
 
   <!-- ================= FOOTER ================= -->
@@ -420,7 +452,7 @@
         </div>
         <div>
           <h4>Act</h4>
-          <ul><li><a href="#join">Volunteer</a></li><li><a href="#donate">Donate</a></li><li><a href="#priorities">Share Your Voice</a></li><li><a href="#faq">FAQ</a></li></ul>
+          <ul><li><a href="#join">Volunteer</a></li><li><a href="#donate">Donate</a></li><li><a href="#contact">Contact Kevin</a></li><li><a href="#priorities">Share Your Voice</a></li><li><a href="#faq">FAQ</a></li></ul>
         </div>
         <div>
           <h4>Stay in the loop</h4>
@@ -433,7 +465,7 @@
       </div>
       <div class="paid-for">
         <div class="paid-box" id="paidFor"></div>
-        <div class="copyright">© <span id="year"></span> Team Reece. All rights reserved.</div>
+        <div class="copyright">© <span id="year"></span> Team Reece · <a href="/privacy">Privacy</a></div>
       </div>
     </div>
   </footer>

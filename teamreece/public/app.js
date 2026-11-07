@@ -34,6 +34,30 @@
     catch { toast("Share: " + url); }
   }
 
+  /* ---------- Backend API ---------- */
+  async function api(path, data) {
+    let r;
+    try {
+      r = await fetch(path, data ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) } : { headers: { Accept: "application/json" } });
+    } catch { throw new Error("Couldn't reach the server. Check your connection and try again."); }
+    let j = {};
+    try { j = await r.json(); } catch { /* non-JSON */ }
+    if (!r.ok) throw new Error(j.error || "Something went wrong. Please try again.");
+    return j;
+  }
+  function busy(btn, on, label) {
+    if (on) { btn.dataset.label = btn.innerHTML; btn.disabled = true; btn.innerHTML = label || "Sending…"; }
+    else { btn.disabled = false; if (btn.dataset.label) btn.innerHTML = btn.dataset.label; }
+  }
+  // Remember who this visitor is so we can pre-fill later forms (RSVP, contact).
+  const me = () => store.get("me", {});
+  const rememberMe = (o) => {
+    store.set("me", { ...me(), ...Object.fromEntries(Object.entries(o).filter(([, v]) => v)) });
+    // Pre-fill any empty contact fields so the visitor never types their details twice
+    [["#cName", o.name], ["#cEmail", o.email], ["#cZip", o.zip]].forEach(([sel, v]) => { const el = $(sel); if (el && v && !el.value) el.value = v; });
+  };
+  const hp = () => `<div class="hp" aria-hidden="true"><label>Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label></div>`;
+
   /* ---------- Inline the <use> shapes so CSS animations can reach them ---------- */
   $$("use").forEach((u) => {
     const ref = $(u.getAttribute("href"));
@@ -394,8 +418,7 @@
   });
 
   /* =======================================================================
-     PRIORITIES — pick top 3
-     Results are stored per-browser until a backend is connected.
+     PRIORITIES — pick top 3, saved to the campaign database
      ======================================================================= */
   const prioOptions = $("#prioOptions"), prioBars = $("#prioBars"), prioSubmit = $("#prioSubmit");
   let picks = [];
@@ -423,14 +446,15 @@
     renderPickState();
   });
 
-  function renderResults(mine) {
-    // Weighted tally: #1 = 3 pts, #2 = 2 pts, #3 = 1 pt
-    const tally = store.get("tally", {});
-    const scores = ISSUES.map((it) => ({ it, v: tally[it.id] || 0 })).sort((a, b) => b.v - a.v);
+  // Weighted community tally from the server: #1 = 3 pts, #2 = 2 pts, #3 = 1 pt
+  function renderResults(mine, tally = { scores: {}, voters: 0 }) {
+    const scores = ISSUES.map((it) => ({ it, v: tally.scores[it.id] || 0 })).sort((a, b) => b.v - a.v);
     const max = Math.max(1, ...scores.map((s) => s.v));
     const total = scores.reduce((a, s) => a + s.v, 0) || 1;
     $("#prioTitle").textContent = "You're on the record ★";
-    $("#prioHint").textContent = "Here's how priorities rank so far. Results update as more people weigh in.";
+    $("#prioHint").textContent = tally.voters > 1
+      ? `${tally.voters.toLocaleString()} people have weighed in. Here's how Michigan's priorities rank so far.`
+      : "You're one of the first to weigh in. Results fill in as more people share their priorities.";
     prioBars.innerHTML = scores.slice(0, 6).map((s) => `
       <div class="bar-row${mine.includes(s.it.id) ? " mine" : ""}">
         <div class="bar-top"><b>${s.it.label}</b><span>${Math.round((s.v / total) * 100)}%</span></div>
@@ -438,31 +462,28 @@
       </div>`).join("");
     requestAnimationFrame(() => requestAnimationFrame(() => $$("i[data-w]", prioBars).forEach((i) => (i.style.width = i.dataset.w + "%"))));
     $$(".prio-opt", prioOptions).forEach((b) => { const i = mine.indexOf(b.dataset.id); b.classList.toggle("sel", i > -1); $(".rank", b).textContent = i > -1 ? i + 1 : ""; b.disabled = true; });
-    prioSubmit.hidden = true; $("#prioShare").hidden = false; $("#prioReset").hidden = false;
+    prioSubmit.hidden = true; $("#prioShare").hidden = false;
   }
-  prioSubmit.addEventListener("click", () => {
-    const tally = store.get("tally", {});
-    picks.forEach((id, i) => (tally[id] = (tally[id] || 0) + (3 - i)));
-    store.set("tally", tally); store.set("myPicks", picks);
-    renderResults(picks);
-    burst();
-    toast("Thanks for weighing in. Your voice shapes this campaign.");
+  prioSubmit.addEventListener("click", async () => {
+    busy(prioSubmit, true, "Saving…");
+    try {
+      const tally = await api("/api/priorities", { picks });
+      store.set("myPicks", picks);
+      renderResults(picks, tally);
+      burst();
+      toast("Thanks for weighing in. Your voice shapes this campaign.");
+    } catch (err) { toast(err.message); busy(prioSubmit, false); }
   });
   $("#prioShare").addEventListener("click", () => {
     const mine = store.get("myPicks", []).map((id) => ISSUES.find((x) => x.id === id).label);
     share(`My top 3 for Michigan: 1) ${mine[0]} 2) ${mine[1]} 3) ${mine[2]}. What are yours? #TeamReece`);
   });
-  $("#prioReset").addEventListener("click", () => {
-    const tally = store.get("tally", {});
-    store.get("myPicks", []).forEach((id, i) => (tally[id] = Math.max(0, (tally[id] || 0) - (3 - i))));
-    store.set("tally", tally); store.del("myPicks");
-    picks = []; prioSubmit.hidden = false; $("#prioShare").hidden = true; $("#prioReset").hidden = true;
-    $("#prioTitle").textContent = "Pick your top 3";
-    renderPickState();
-  });
   let savedPicks = store.get("myPicks");
-  if (savedPicks && !savedPicks.every((id) => ISSUES.some((it) => it.id === id))) { store.del("myPicks"); store.del("tally"); savedPicks = null; }
-  if (savedPicks) renderResults(savedPicks); else renderPickState();
+  if (savedPicks && !savedPicks.every((id) => ISSUES.some((it) => it.id === id))) { store.del("myPicks"); savedPicks = null; }
+  if (savedPicks) {
+    renderResults(savedPicks);
+    api("/api/priorities").then((t) => renderResults(savedPicks, t)).catch(() => {});
+  } else renderPickState();
 
   /* =======================================================================
      MAP — regions of Michigan
@@ -497,16 +518,12 @@
   function showRegion(id) {
     const r = REGIONS.find((x) => x.id === id);
     $$(".pin", pinsG).forEach((p) => p.classList.toggle("active", p.dataset.id === id));
-    const members = store.get("signups", []).filter((s) => s.region === id).length;
     regionCard.innerHTML = `
       <span class="eyebrow">Region</span>
       <h3>${r.name}${r.home ? '<span class="home-badge">Hometown</span>' : ""}</h3>
       <p class="region-cities">${r.cities}</p>
       <p class="region-focus">${r.focus}</p>
-      <div class="region-meta">
-        <div><b>${r.issues.length}</b>Top issues</div>
-        <div><b>${members}</b>Signed up here</div>
-      </div>
+      <p class="region-label">Top issues here</p>
       <div class="chips" style="margin-bottom:24px">${r.issues.map((i) => `<button class="chip" data-open="${i}">${ISSUES.find((x) => x.id === i).label}</button>`).join("")}</div>
       <button class="btn btn-primary" data-organize="${r.id}">Organize in ${r.name.replace("The ", "the ")} →</button>`;
     regionCard.classList.remove("in"); void regionCard.offsetWidth; regionCard.classList.add("in");
@@ -552,16 +569,59 @@
   eventList.addEventListener("click", (e) => {
     const r = e.target.closest("[data-rsvp]");
     if (r) {
-      const k = r.dataset.rsvp, on = !rsvps[k];
-      if (on) rsvps[k] = true; else delete rsvps[k];
-      store.set("rsvps", rsvps);
-      r.classList.toggle("going", on); r.textContent = on ? "✓ Going" : "RSVP";
-      toast(on ? "You're on the list! See you there." : "RSVP removed.");
-      if (on) burst(r);
+      if (rsvps[r.dataset.rsvp]) return toast("You're already on the list. See you there!");
+      openRsvp(events.find((ev) => ev.key === r.dataset.rsvp), r);
     }
     const c = e.target.closest("[data-ics]");
     if (c) downloadICS(C.events[+c.dataset.ics]);
   });
+
+  function openRsvp(ev, btn) {
+    const m = me(), d = new Date(ev.date);
+    openModal(`
+      <span class="eyebrow">RSVP</span>
+      <h3 id="modalTitle">${esc(ev.title)}</h3>
+      <p style="color:var(--muted);margin-top:-8px">${d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })} · ${d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })} · ${esc(ev.place)}</p>
+      <form id="rsvpForm" novalidate style="margin-top:22px">
+        ${hp()}
+        <div class="field"><label for="rName">Your name</label><input id="rName" name="name" autocomplete="name" required value="${esc(m.name || "")}" /><span class="err">Required</span></div>
+        <div class="field-row">
+          <div class="field"><label for="rEmail">Email</label><input id="rEmail" name="email" type="email" autocomplete="email" required value="${esc(m.email || "")}" /><span class="err">Enter a valid email</span></div>
+          <div class="field"><label for="rGuests">Bringing guests?</label><select id="rGuests" name="guests">${[0, 1, 2, 3, 4, 5].map((n) => `<option value="${n}">${n ? "+" + n : "Just me"}</option>`).join("")}</select></div>
+        </div>
+        <label class="check" style="margin-bottom:18px"><input type="checkbox" name="updates" checked /><span>Send me campaign updates</span></label>
+        <button class="btn btn-primary" type="submit" style="width:100%">Save my spot</button>
+      </form>`);
+    const f = $("#rsvpForm");
+    f.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!validateFields(f)) return;
+      const fd = new FormData(f), b = $("button[type=submit]", f);
+      const data = { event_key: ev.key, event_title: ev.title, event_date: ev.date, name: fd.get("name"), email: fd.get("email"), guests: fd.get("guests"), updates: fd.has("updates"), website: fd.get("website") };
+      busy(b, true, "Saving…");
+      try {
+        await api("/api/rsvp", data);
+        rememberMe({ name: data.name, email: data.email });
+        rsvps[ev.key] = true; store.set("rsvps", rsvps);
+        btn.classList.add("going"); btn.textContent = "✓ Going";
+        closeModal(); burst(btn);
+        toast("You're on the list! See you there.");
+      } catch (err) { toast(err.message); busy(b, false); }
+    });
+  }
+
+  // Shared validation for simple forms: required, email, ZIP
+  function validateFields(root) {
+    let ok = true;
+    $$("[required]", root).forEach((inp) => {
+      let valid = inp.value.trim() !== "";
+      if (inp.type === "email") valid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(inp.value.trim());
+      if (inp.name === "zip") valid = /^\d{5}$/.test(inp.value.trim());
+      const f = inp.closest(".field"); if (f) f.classList.toggle("invalid", !valid);
+      if (!valid && ok) { inp.focus(); ok = false; }
+    });
+    return ok;
+  }
 
   function downloadICS(ev) {
     const fmt = (s) => { const d = new Date(s); return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, ""); };
@@ -604,24 +664,28 @@
   form.addEventListener("input", (e) => { const f = e.target.closest(".field"); if (f) f.classList.remove("invalid"); });
   form.addEventListener("keydown", (e) => { if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") { e.preventDefault(); nextBtn.click(); } });
   prevBtn.addEventListener("click", () => setStep(step - 1));
-  nextBtn.addEventListener("click", () => {
+  nextBtn.addEventListener("click", async () => {
     if (!validate(step)) return;
     if (step < steps.length - 1) return setStep(step + 1);
     const fd = new FormData(form);
     const entry = {
       first: fd.get("first").trim(), last: fd.get("last").trim(), email: fd.get("email").trim(), phone: (fd.get("phone") || "").trim(),
-      zip: fd.get("zip").trim(), region: fd.get("region"), help: fd.getAll("help").join("; "), when: fd.getAll("when").join("; "),
-      message: (fd.get("message") || "").trim(), at: new Date().toISOString()
+      zip: fd.get("zip").trim(), region: fd.get("region"), help: fd.getAll("help"), when: fd.getAll("when"),
+      message: (fd.get("message") || "").trim(), updates: fd.has("updates"), website: fd.get("website")
     };
-    const list = store.get("signups", []); list.push(entry); store.set("signups", list);
+    busy(nextBtn, true, "Joining…");
+    try {
+      await api("/api/volunteer", entry);
+    } catch (err) { toast(err.message); busy(nextBtn, false); return; }
+    busy(nextBtn, false);
+    rememberMe({ name: `${entry.first} ${entry.last}`, email: entry.email, zip: entry.zip });
     const region = REGIONS.find((r) => r.id === entry.region);
     $("#memberCard").innerHTML = `
       <div class="mc-top"><span>TEAM<b>REECE</b>HQ</span><span>★</span></div>
       <div><div class="mc-meta">Founding Member</div><div class="mc-name">${esc(entry.first)} ${esc(entry.last)}</div></div>
-      <div class="mc-top" style="color:var(--muted)"><span>${esc(region ? region.name : "Michigan")}</span><span>#${String(1000 + list.length).slice(-4)}</span></div>`;
+      <div class="mc-top" style="color:var(--muted)"><span>${esc(region ? region.name : "Michigan")}</span><span>Est. ${new Date().getFullYear()}</span></div>`;
     form.hidden = true; $("#joinSuccess").classList.add("show");
     burst();
-    if ($(".pin.active")) showRegion($(".pin.active").dataset.id);
   });
   $("#joinAgain").addEventListener("click", () => { form.reset(); form.hidden = false; $("#joinSuccess").classList.remove("show"); setStep(0); });
   $("#shareJoin").addEventListener("click", () => share("I just joined Team Reece. The movement starts here. Join me!"));
@@ -676,32 +740,46 @@
   renderImpact();
 
   /* ---------- Newsletter ---------- */
-  $("#newsForm").addEventListener("submit", (e) => {
+  $("#newsForm").insertAdjacentHTML("afterbegin", hp());
+  $("#newsForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const inp = $("input", e.target), v = inp.value.trim();
+    const f = e.target, inp = $("input[type=email]", f), b = $("button", f), v = inp.value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) { inp.focus(); return toast("Enter a valid email address."); }
-    const list = store.get("newsletter", []); if (!list.includes(v)) list.push(v); store.set("newsletter", list);
-    inp.value = ""; toast("You're subscribed. Welcome to the movement! ★");
+    busy(b, true, "…");
+    try {
+      const r = await api("/api/newsletter", { email: v, source: "footer", website: $("[name=website]", f).value });
+      rememberMe({ email: v });
+      inp.value = "";
+      toast(r.already ? "You're already subscribed. Thanks for being part of the team!" : "You're subscribed. Welcome to the movement! ★");
+    } catch (err) { toast(err.message); }
+    busy(b, false);
   });
 
-  /* ---------- Admin view (?admin) ---------- */
-  if (new URLSearchParams(location.search).has("admin")) {
-    const admin = $("#admin"); admin.classList.add("show");
-    const cols = ["at", "first", "last", "email", "phone", "zip", "region", "help", "when", "message"];
-    const render = () => {
-      const rows = store.get("signups", []);
-      $("#adminTable").innerHTML = `<tr>${cols.map((c) => `<th>${c}</th>`).join("")}</tr>` +
-        (rows.length ? rows.map((r) => `<tr>${cols.map((c) => `<td>${esc(r[c] || "")}</td>`).join("")}</tr>`).join("") : `<tr><td colspan="${cols.length}">No sign-ups on this device yet.</td></tr>`);
-    };
-    render();
-    $("#exportCsv").addEventListener("click", () => {
-      const rows = store.get("signups", []);
-      const csv = [cols.join(","), ...rows.map((r) => cols.map((c) => `"${String(r[c] || "").replace(/"/g, '""')}"`).join(","))].join("\n");
-      const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" })); a.download = "team-reece-signups.csv"; a.click();
-    });
-    $("#clearData").addEventListener("click", () => { if (confirm("Delete all sign-ups stored in this browser?")) { store.del("signups"); render(); } });
-    setTimeout(() => admin.scrollIntoView(), 300);
-  }
+  /* ---------- Contact Kevin ---------- */
+  const contactForm = $("#contactForm");
+  contactForm.insertAdjacentHTML("afterbegin", hp());
+  const m0 = me();
+  if (m0.name) $("#cName").value = m0.name;
+  if (m0.email) $("#cEmail").value = m0.email;
+  if (m0.zip) $("#cZip").value = m0.zip;
+  $$("[data-topic]").forEach((a) => a.addEventListener("click", () => { $("#cTopic").value = a.dataset.topic; setTimeout(() => $("#cMsg").focus({ preventScroll: true }), 600); }));
+  contactForm.addEventListener("input", (e) => { const f = e.target.closest(".field"); if (f) f.classList.remove("invalid"); });
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!validateFields(contactForm)) return;
+    const fd = new FormData(contactForm), b = $("button[type=submit]", contactForm);
+    const data = Object.fromEntries(["name", "email", "zip", "topic", "message", "website"].map((k) => [k, fd.get(k) || ""]));
+    data.updates = fd.has("updates");
+    busy(b, true, "Sending…");
+    try {
+      await api("/api/contact", data);
+      rememberMe({ name: data.name, email: data.email, zip: data.zip });
+      contactForm.hidden = true; $("#contactSuccess").classList.add("show");
+      burst(b);
+    } catch (err) { toast(err.message); }
+    busy(b, false);
+  });
+  $("#contactAgain").addEventListener("click", () => { $("#cMsg").value = ""; contactForm.hidden = false; $("#contactSuccess").classList.remove("show"); });
 
   /* ---------- Confetti (stars, in brand colors) ---------- */
   const cf = $("#confetti"), cctx = cf.getContext("2d");

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy | Team Reece</title>
+  <meta name="theme-color" content="#05070c" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Michroma&family=Montserrat:ital,wght@1,800;1,900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .doc { max-width: 760px; margin: 0 auto; padding: 130px 16px 90px; }
+    .doc h2 { font-family: var(--font-display); font-weight: 800; font-style: italic; text-transform: uppercase; letter-spacing: .1em; color: #fff; font-size: 1.05rem; margin: 36px 0 10px; }
+    .doc p, .doc li { color: var(--text); margin-bottom: 12px; }
+    .doc ul { padding-left: 22px; }
+    .doc a { color: var(--blue-bright); }
+  </style>
+</head>
+<body>
+  <header class="nav scrolled"><div class="wrap nav-inner">
+    <a href="/" class="brand"><span class="brand-word" style="display:inline">TEAM<b>REECE</b>HQ</span></a>
+    <a href="/" class="btn btn-ghost btn-sm">← Back to site</a>
+  </div></header>
+  <main class="doc">
+    <span class="eyebrow">Privacy</span>
+    <h1 class="h-display" style="margin-top:14px">Privacy Policy</h1>
+    <p style="color:var(--muted)">Last updated: November 2026</p>
+
+    <p>Team Reece respects your privacy. This page explains what information we collect through this website and how we use it.</p>
+
+    <h2>What we collect</h2>
+    <ul>
+      <li><b>Information you give us:</b> your name, email, phone number, ZIP code, region, volunteer interests, availability, and messages when you sign up to volunteer, RSVP to an event, contact us, or subscribe to updates.</li>
+      <li><b>Priority votes:</b> the three issues you rank in "What Matters Most." These are stored anonymously, without your name or email.</li>
+      <li><b>Basic technical data:</b> our hosting provider may log standard information like IP address and browser type for security and to prevent abuse.</li>
+    </ul>
+
+    <h2>How we use it</h2>
+    <ul>
+      <li>To contact you about volunteering, events, and the campaign</li>
+      <li>To reply to your messages and questions</li>
+      <li>To send campaign updates, if you've signed up for them</li>
+      <li>To understand which issues matter most to Michiganders</li>
+    </ul>
+
+    <h2>What we don't do</h2>
+    <p>We do not sell your personal information. We share it only with service providers that help us run the campaign (such as our website host, database, and email provider), or when required by law. Campaign finance law requires us to report certain information about contributors.</p>
+
+    <h2>Emails and unsubscribing</h2>
+    <p>Every campaign email includes an unsubscribe link. You can also email us at any time to be removed from our list.</p>
+
+    <h2>Your choices</h2>
+    <p>To see, correct, or delete the information we have about you, contact us at <a href="mailto:hello@teamreece.com" data-mail-text>hello@teamreece.com</a> and we'll take care of it.</p>
+
+    <h2>Security</h2>
+    <p>Your information is stored in a secured database, and access is limited to authorized campaign staff.</p>
+  </main>
+  <footer class="footer"><div class="wrap"><div class="paid-for" style="margin-top:0;border-top:0;padding-top:0">
+    <div class="paid-box" id="paidFor">Paid for by Team Reece HQ.</div><div class="copyright"><a href="/">teamreece</a></div>
+  </div></div></footer>
+  <script src="config.js"></script>
+  <script>
+    (function () { var C = window.CAMPAIGN || {};
+      if (C.paidFor) document.getElementById("paidFor").textContent = C.paidFor;
+      if (C.email) document.querySelectorAll("[data-mail-text]").forEach(function (a) { a.href = "mailto:" + C.email; a.textContent = C.email; });
+    })();
+  </script>
+</body>
+</html>
