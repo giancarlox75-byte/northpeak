@@ -70,6 +70,9 @@
   };
   const hp = () => `<div class="hp" aria-hidden="true"><label>Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label></div>`;
 
+  /* ---------- Real Michigan outline (U.S. Census Bureau boundaries) for the hero background ---------- */
+  if (window.MI_MAP) { const g = $("#michigan"); if (g) g.innerHTML = `<path d="${window.MI_MAP.state}"></path>`; }
+
   /* ---------- Inline the <use> shapes so CSS animations can reach them ---------- */
   $$("use").forEach((u) => {
     const ref = $(u.getAttribute("href"));
@@ -307,7 +310,8 @@
       why: "Owning a home is how families build stability and wealth. That shouldn't be a dream reserved for the lucky few." },
     { id: "costs", top: true, cat: "affordability", icon: "cart", label: "Everyday costs", title: "Lower Everyday Costs",
       short: "Utilities, groceries and insurance keep climbing. Michigan families need relief, and Main Street needs room to grow.",
-      problem: "Paychecks aren't keeping up. Michigan drivers pay some of the highest car-insurance rates in the country, utility bills keep rising even when the power goes out, and grocery prices squeeze every budget.",
+      problem: "Paychecks aren't keeping up. Even after the 2019 reforms, Michigan drivers still pay some of the highest car-insurance rates in the country. Utility bills keep rising even when the power goes out, and grocery prices squeeze every budget.",
+      sources: [["Insurify: average cost of car insurance in Michigan", "https://www.insurify.com/car-insurance/michigan/average-cost"], ["Michigan Public: Michigan last in the nation for restoring power (2025)", "https://www.michiganpublic.org/transportation-infrastructure/2025-09-05/michigan-last-in-nation-in-2023-for-restoring-power-after-outages-says-utility-watchdog-report"]],
       plan: ["Hold utilities accountable: no rate hikes without real improvements in reliability",
         "Keep pushing car-insurance costs down and protect drivers from unfair pricing",
         "Crack down on price gouging and junk fees on everyday bills",
@@ -333,12 +337,14 @@
       why: "There's more than one road to success. Every one of them should lead to a future in Michigan." },
     { id: "roads", cat: "infrastructure", icon: "road", label: "Roads & bridges", title: "Fix the Roads & Bridges",
       short: "Michigan drivers deserve roads that don't wreck their cars and bridges they can trust.",
-      problem: "Potholes cost drivers hundreds of dollars a year in repairs, and too many bridges are in poor condition.",
+      problem: "TRIP, a national transportation research group, estimates that rough, congested and unsafe roads cost Michigan drivers $17.3 billion a year, up to $2,921 per driver in Metro Detroit. More than 1 in 5 Michigan roads are in poor condition.",
+      sources: [["TRIP: Keeping Michigan Mobile (2024)", "https://tripnet.org/wp-content/uploads/2024/07/TRIP_Keeping_Michigan_Mobile_Report_July_2024.pdf"], ["Detroit Free Press via Yahoo: Michigan drivers rack up thousands in yearly vehicle costs due to poor roads (2025)", "https://www.yahoo.com/news/articles/michigan-drivers-rack-thousands-yearly-164725069.html"]],
       plan: ["Long-term, dependable road funding, not one-year patches", "Fix roads based on need, with a public map of where the money goes", "Build with Michigan workers and demand quality that lasts", "Invest in public transit and safe routes for people without cars"],
       why: "Good roads get people to work, kids to school, and goods to market." },
     { id: "energy", cat: "infrastructure", icon: "bolt", label: "Energy & the grid", title: "Reliable, Affordable Energy",
       short: "Keep the lights on and bills low, and modernize Michigan's energy system using every tool we have.",
-      problem: "Michigan families and businesses face some of the longest power outages in the region, even as rates keep going up.",
+      problem: "In 2023, Michigan ranked last in the nation for how long it takes to restore power after an outage, according to the Citizens Utility Board of Michigan. Families and businesses are paying more and waiting longer in the dark.",
+      sources: [["Michigan Public: Michigan last in nation in 2023 for restoring power after outages (2025)", "https://www.michiganpublic.org/transportation-infrastructure/2025-09-05/michigan-last-in-nation-in-2023-for-restoring-power-after-outages-says-utility-watchdog-report"]],
       plan: ["Improve grid reliability, with real penalties for utilities that leave families in the dark",
         "An all-of-the-above energy strategy that balances cost, reliability and the environment",
         "Modernize the grid and grow the energy jobs of the future here in Michigan",
@@ -346,22 +352,24 @@
       why: "Reliable, affordable power is essential for every home, school and business in Michigan." },
     { id: "water", cat: "infrastructure", icon: "water", label: "Clean water", title: "Clean Water & Great Lakes",
       short: "Safe drinking water in every home, and Great Lakes protected for the next generation.",
-      problem: "Aging pipes, pollution and underfunded water systems put families at risk. Flint knows this better than anywhere.",
+      problem: "Aging pipes, pollution and underfunded water systems put families at risk. Flint knows this better than anywhere. Michigan's Great Lakes shoreline runs 3,288 miles, the longest freshwater coastline in the United States.",
+      sources: [["Michigan EGLE: Shoreland management (3,288 miles of Great Lakes shoreline)", "https://www.michigan.gov/egle/about/organization/water-resources/shoreland-management"]],
       plan: ["Replace every lead service line in Michigan", "Protect the Great Lakes from pollution and invasive species", "Make polluters, not taxpayers, pay for cleanup", "Keep water bills affordable while upgrading local systems"],
       why: "Clean, safe, affordable water is a basic right, and the Great Lakes are who we are." },
     { id: "mental", cat: "health", icon: "heart", label: "Mental health", title: "Mental Health Care When You Need It",
       short: "No one should wait months for help. Mental-health care should be as easy to get as any other care.",
-      problem: "Michiganders often wait weeks or months for mental-health care, and many communities don't have a single provider nearby.",
+      problem: "Too many Michiganders wait weeks for mental-health care, and many communities, especially rural ones, have few providers nearby.",
       plan: ["Expand mental-health services in schools, colleges and communities", "Strengthen crisis response so people in crisis get help, not handcuffs", "Require insurers to cover mental health on equal terms with physical health", "Grow the mental-health workforce with loan forgiveness for those who serve in Michigan"],
       why: "Mental health is health. Getting help should never depend on where you live or what you can afford." },
     { id: "rural", cat: "health", icon: "health", label: "Rural & affordable care", title: "Healthcare Close to Home",
       short: "Affordable care, rural hospitals that stay open, and enough doctors and nurses to go around.",
-      problem: "Rural hospitals are struggling, healthcare workers are in short supply, and medical bills remain a leading cause of debt.",
+      problem: "Rural hospitals are struggling, healthcare workers are in short supply, and medical bills push too many families into debt.",
       plan: ["Keep rural hospitals and clinics open with targeted support", "Expand telehealth so care comes to you", "Address the shortage of doctors, nurses and healthcare workers through training and loan forgiveness", "Lower out-of-pocket costs and protect coverage for people with pre-existing conditions"],
       why: "Nobody should have to drive two hours to see a doctor, or go broke getting sick." },
     { id: "open", top: true, cat: "accountability", icon: "eye", label: "Open government", title: "Open Records for All",
       short: "Michigan's Governor and Legislature are exempt from public-records law. That ends.",
-      problem: "Michigan is one of only two states where the Governor's office and the Legislature are exempt from public-records (FOIA) law. Spending is hard to follow, and public trust is low.",
+      problem: "Michigan and Massachusetts are the only two states where both the Governor's office and the Legislature are exempt from public-records (FOIA) law. Reform bills have passed one chamber before and stalled. Spending is hard to follow, and public trust is low.",
+      sources: [["Bridge Michigan: Michigan is one of two states that exempts the Legislature and governor's office from records requests", "https://www.bridgemi.com/michigan-government/michigan-lags-nation-government-transparency-lawmakers-promise-change"], ["Michigan Public: Michigan's Legislature and governor are exempt from FOIA, making it an outlier (2024)", "https://michiganpublic.org/politics-government/2024-02-29/michigans-legislature-and-governor-are-exempt-from-freedom-of-information-laws-making-it-an-outlier-in-the-u-s"]],
       plan: ["End the FOIA exemption for the Governor and Legislature", "Put state spending online in a simple, searchable dashboard anyone can understand", "Cut unnecessary bureaucracy and use technology to make state services faster and easier", "Stronger ethics and disclosure rules to rebuild trust in elected officials"],
       why: "It's your government and your money. You have a right to see how both are being used." }
   ];
@@ -417,6 +425,7 @@
       <h4>The Problem</h4><p>${it.problem}</p>
       <h4>The Plan</h4><ul class="plan-list">${it.plan.map((p) => `<li>${p}</li>`).join("")}</ul>
       <h4>Why It Matters</h4><p>${it.why}</p>
+      ${it.sources ? `<h4>Sources</h4><ul class="source-list">${it.sources.map(([label, url]) => `<li><a href="${url}" target="_blank" rel="noopener">${esc(label)}</a></li>`).join("")}</ul>` : ""}
       <div class="modal-actions">
         <button class="btn btn-primary btn-sm" data-act="share" data-title="${esc(it.title)}">Share this plan</button>
         <a href="#join" class="btn btn-ghost btn-sm" data-close>Help make it happen</a>
@@ -498,126 +507,165 @@
   } else renderPickState();
 
   /* =======================================================================
-     MAP — regions of Michigan
+     MAP — Michigan's 83 counties in the 10 official Prosperity Regions
+     Boundaries: U.S. Census Bureau (data/michigan-map.js, built by scripts/build-data.js)
+     Population: 2020 Census, loaded live from /api/census
      ======================================================================= */
-  const REGIONS = [
-    { id: "up", name: "Upper Peninsula", x: 205, y: 104, lx: 0, ly: 26, anchor: "middle", cities: "Marquette · Sault Ste. Marie · Escanaba · Houghton",
-      focus: "Broadband that actually reaches, mining and timber jobs with a future, and making sure Lansing never forgets the U.P.", issues: ["rural", "jobs", "energy"] },
-    { id: "north", name: "Northern Michigan", x: 318, y: 212, lx: 12, ly: 4, anchor: "start", cities: "Traverse City · Gaylord · Petoskey · Alpena",
-      focus: "Housing that workers can afford in tourism towns, clean lakes, and year-round jobs, not just summer ones.", issues: ["housing", "jobs", "water"] },
-    { id: "west", name: "West Michigan", x: 254, y: 320, lx: -12, ly: 4, anchor: "end", cities: "Grand Rapids · Holland · Muskegon",
-      focus: "Keeping a growing region affordable, backing manufacturers, and protecting the Lake Michigan shoreline.", issues: ["housing", "jobs", "pathways"] },
-    { id: "bay", name: "Great Lakes Bay", x: 346, y: 290, lx: 0, ly: -14, anchor: "middle", cities: "Saginaw · Bay City · Midland · Flint",
-      focus: "Kevin's hometown region. Clean, safe water in every home, strong schools, revitalized downtowns, and the next generation of good-paying jobs.", issues: ["water", "schools", "housing"], home: true },
-    { id: "thumb", name: "The Thumb", x: 400, y: 292, lx: 10, ly: 4, anchor: "start", cities: "Port Huron · Bad Axe · Lapeer · Sandusky",
-      focus: "Family farms, rural hospitals that stay open, and roads that hold up to the work.", issues: ["rural", "roads", "costs"] },
-    { id: "capital", name: "Capital Region", x: 314, y: 352, lx: -12, ly: 4, anchor: "end", cities: "Lansing · East Lansing · Jackson",
-      focus: "Opening up state government, supporting students and young workers, and growing good jobs at home.", issues: ["open", "ai", "schools"] },
-    { id: "metro", name: "Metro Detroit", x: 388, y: 372, lx: 0, ly: 24, anchor: "middle", cities: "Detroit · Warren · Dearborn · Troy · Ann Arbor",
-      focus: "Where Kevin spent part of growing up, in Ann Arbor and Troy. Lower living costs, great schools, tech jobs, and a comeback that reaches every block.", issues: ["costs", "ai", "jobs"] },
-    { id: "southwest", name: "Southwest Michigan", x: 262, y: 390, lx: 0, ly: 26, anchor: "middle", cities: "Kalamazoo · Battle Creek · Benton Harbor · St. Joseph",
-      focus: "Where Kevin went to college at Western Michigan and worked in Kalamazoo. Investing in workers, students, and small towns, and connecting graduates with great Michigan careers.", issues: ["jobs", "pathways", "mental"] }
-  ];
-  const pinsG = $("#pins"), regionCard = $("#regionCard");
-  pinsG.innerHTML = REGIONS.map((r) => `
-    <g class="pin" data-id="${r.id}" tabindex="0" role="button" aria-label="${r.name}">
-      <circle class="pulse" cx="${r.x}" cy="${r.y}" r="7"/>
-      <circle class="core" cx="${r.x}" cy="${r.y}" r="6"/>
-      <text x="${r.x + r.lx}" y="${r.y + r.ly}" text-anchor="${r.anchor}">${r.name.replace("Michigan", "").replace("The ", "").trim() || r.name}</text>
-    </g>`).join("");
-  $("#fRegion").innerHTML += REGIONS.map((r) => `<option value="${r.id}">${r.name}</option>`).join("");
+  const MAP = window.MI_MAP;
+  const REGIONS = MAP.regions;
+  const svgMap = $("#miMap"), tip = $("#mapTip"), regionCard = $("#regionCard"), regionChips = $("#regionChips");
+  let census = null, currentRegion = "east";
+  const fmtN = (n) => Number(n).toLocaleString("en-US");
+
+  svgMap.innerHTML = `
+    <g class="counties">${MAP.counties.map((c) => `<path class="county" data-fips="${c.fips}" data-region="${c.region}" d="${c.d}"></path>`).join("")}</g>
+    <g class="region-lines" aria-hidden="true">${REGIONS.map((r) => `<path class="region-outline" data-region="${r.id}" d="${r.d}"></path>`).join("")}</g>
+    <g class="region-nums" aria-hidden="true">${REGIONS.map((r) => `<g class="rnum" data-region="${r.id}"><circle cx="${r.c[0]}" cy="${r.c[1]}" r="15"></circle><text x="${r.c[0]}" y="${r.c[1] + 5}" text-anchor="middle">${r.num}</text></g>`).join("")}</g>`;
+  regionChips.innerHTML = REGIONS.map((r) => `<button class="chip" role="tab" data-region="${r.id}" aria-selected="false">${r.num} · ${esc(r.name)}</button>`).join("");
 
   function showRegion(id) {
-    const r = REGIONS.find((x) => x.id === id);
-    $$(".pin", pinsG).forEach((p) => p.classList.toggle("active", p.dataset.id === id));
+    const r = REGIONS.find((x) => x.id === id); if (!r) return;
+    currentRegion = id;
+    $$(".county", svgMap).forEach((p) => p.classList.toggle("on", p.dataset.region === id));
+    $$(".region-outline, .rnum", svgMap).forEach((p) => p.classList.toggle("on", p.dataset.region === id));
+    $$(".chip", regionChips).forEach((c) => { const on = c.dataset.region === id; c.classList.toggle("active", on); c.setAttribute("aria-selected", on); });
+    const pop = census?.regions?.[id];
+    const countyPop = (name) => { const c = census && Object.values(census.counties).find((x) => x.name === name); return c ? c.pop : null; };
+    const tie = r.home || r.connection;
     regionCard.innerHTML = `
-      <span class="eyebrow">Region</span>
-      <h3>${r.name}${r.home ? '<span class="home-badge">Hometown</span>' : ""}</h3>
-      <p class="region-cities">${r.cities}</p>
-      <p class="region-focus">${r.focus}</p>
+      <span class="eyebrow">Region ${r.num}</span>
+      <h3>${esc(r.name)}${r.home ? '<span class="home-badge">Kevin\'s hometown</span>' : ""}</h3>
+      <p class="region-cities">${r.cities.map(esc).join(" · ")}</p>
+      ${tie ? `<p class="region-tie">★ ${esc(tie)}</p>` : ""}
+      <div class="region-meta">
+        <div><b>${r.counties.length}</b>Counties</div>
+        <div><b>${pop ? fmtN(pop) : "—"}</b>Residents</div>
+        <div><b>${pop && census.total ? ((pop / census.total) * 100).toFixed(1) + "%" : "—"}</b>Of Michigan</div>
+      </div>
+      ${pop ? "" : `<p class="region-note">${C.preview ? "2020 Census population loads live on the launched site." : "2020 Census population is loading…"}</p>`}
+      <p class="region-focus">${esc(r.focus)}</p>
       <p class="region-label">Top issues here</p>
-      <div class="chips" style="margin-bottom:24px">${r.issues.map((i) => `<button class="chip" data-open="${i}">${ISSUES.find((x) => x.id === i).label}</button>`).join("")}</div>
-      <button class="btn btn-primary" data-organize="${r.id}">Organize in ${r.name.replace("The ", "the ")} →</button>`;
-    regionCard.classList.remove("in"); void regionCard.offsetWidth; regionCard.classList.add("in");
+      <div class="chips" style="margin-bottom:18px">${r.issues.map((i) => `<button class="chip" data-open="${i}">${ISSUES.find((x) => x.id === i).label}</button>`).join("")}</div>
+      <details class="county-list"><summary>All ${r.counties.length} counties</summary>
+        <ul>${r.counties.map((c) => { const p = countyPop(c); return `<li><span>${esc(c)}</span>${p ? `<span>${fmtN(p)}</span>` : ""}</li>`; }).join("")}</ul>
+      </details>
+      <div class="region-actions">
+        <button class="btn btn-primary btn-sm" data-join="organizer" data-region="${r.id}">Organize here</button>
+        <button class="btn btn-ghost btn-sm" data-join="regional" data-region="${r.id}">Lead this region</button>
+      </div>
+      ${pop ? `<p class="region-source">Population: U.S. Census Bureau, 2020 Census</p>` : ""}`;
   }
-  pinsG.addEventListener("click", (e) => { const p = e.target.closest(".pin"); if (p) showRegion(p.dataset.id); });
-  pinsG.addEventListener("keydown", (e) => { const p = e.target.closest(".pin"); if (p && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); showRegion(p.dataset.id); } });
+  svgMap.addEventListener("click", (e) => { const c = e.target.closest(".county"); if (c) showRegion(c.dataset.region); });
+  svgMap.addEventListener("pointermove", (e) => {
+    const c = e.target.closest(".county");
+    if (!c) { tip.hidden = true; return; }
+    const county = MAP.counties.find((x) => x.fips === c.dataset.fips), r = REGIONS.find((x) => x.id === county.region);
+    const pop = census?.counties?.[county.fips]?.pop;
+    tip.innerHTML = `<b>${esc(county.name)} County</b><span>Region ${r.num} · ${esc(r.name)}${pop ? ` · ${fmtN(pop)} residents` : ""}</span>`;
+    const box = svgMap.parentElement.getBoundingClientRect();
+    tip.style.left = Math.min(box.width - 220, Math.max(0, e.clientX - box.left + 14)) + "px";
+    tip.style.top = (e.clientY - box.top + 14) + "px";
+    tip.hidden = false;
+  });
+  svgMap.addEventListener("pointerleave", () => (tip.hidden = true));
+  regionChips.addEventListener("click", (e) => { const c = e.target.closest(".chip"); if (c) showRegion(c.dataset.region); });
   regionCard.addEventListener("click", (e) => {
     const o = e.target.closest("[data-open]");
     if (o) $(`.issue[data-id="${o.dataset.open}"]`).click();
-    const g = e.target.closest("[data-organize]");
-    if (g) {
-      $("#fRegion").value = g.dataset.organize;
-      const cap = $('input[value="Region captain"]'); if (cap) cap.checked = true;
-      $("#join").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
-      setTimeout(() => $("#fFirst").focus({ preventScroll: true }), 700);
-    }
+    const j = e.target.closest("[data-join]");
+    if (j) startJoin(j.dataset.join, j.dataset.region);
   });
-  showRegion("bay");
+  showRegion(currentRegion);
+  if (!C.preview) api("/api/census").then((d) => { census = d; showRegion(currentRegion); }).catch(() => {
+    $$(".region-note", regionCard).forEach((n) => (n.textContent = "2020 Census population is temporarily unavailable."));
+  });
 
   /* =======================================================================
-     EVENTS
+     EVENTS & SHIFTS — managed in Campaign HQ → Events
      ======================================================================= */
-  const eventList = $("#eventList");
+  const eventList = $("#eventList"), eventFilters = $("#eventFilters");
   const rsvps = store.get("rsvps", {});
-  const now = Date.now();
-  const events = (C.events || []).map((e, i) => ({ ...e, key: e.title + e.date, i })).filter((e) => new Date(e.end || e.date).getTime() > now)
-    .sort((a, b) => new Date(a.date) - new Date(b.date));
-  eventList.innerHTML = events.length ? events.map((ev) => {
-    const d = new Date(ev.date);
-    const time = d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
-    const day = d.toLocaleDateString("en-US", { weekday: "long" });
-    const going = rsvps[ev.key];
-    return `<article class="event reveal">
-      <div class="event-date"><div class="m">${d.toLocaleDateString("en-US", { month: "short" })}</div><div class="d">${d.getDate()}</div><div class="y">${d.getFullYear()}</div></div>
-      <div><span class="event-type">${esc(ev.type || "Event")}</span><h3>${esc(ev.title)}</h3><p class="where">${day}, ${time} · ${esc(ev.place)}</p><p class="desc">${esc(ev.desc || "")}</p></div>
-      <div class="event-actions">
-        <button class="btn btn-primary btn-sm${going ? " going" : ""}" data-rsvp="${esc(ev.key)}">${going ? "✓ Going" : "RSVP"}</button>
-        <button class="btn btn-ghost btn-sm" data-ics="${ev.i}">+ Calendar</button>
-      </div>
-    </article>`;
-  }).join("") : `<p class="lede">New events are being scheduled now. Join the team to hear first.</p>`;
+  const SHIFT_TYPES = ["Canvass", "Phone Bank", "Volunteer Night", "Training"];
+  let events = [], eventFilter = "all";
 
+  function renderEvents() {
+    const list = events.filter((ev) => eventFilter === "all" || (eventFilter === "shifts" ? SHIFT_TYPES.includes(ev.type) : !SHIFT_TYPES.includes(ev.type)));
+    const hasShifts = events.some((ev) => SHIFT_TYPES.includes(ev.type)), hasPublic = events.some((ev) => !SHIFT_TYPES.includes(ev.type));
+    eventFilters.innerHTML = hasShifts && hasPublic ? [["all", "Everything"], ["shifts", "Volunteer shifts"], ["public", "Public events"]]
+      .map(([k, l]) => `<button class="chip${eventFilter === k ? " active" : ""}" data-filter="${k}">${l}</button>`).join("") : "";
+    eventList.innerHTML = list.length ? list.map((ev) => {
+      const d = new Date(ev.date);
+      const time = d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+      const day = d.toLocaleDateString("en-US", { weekday: "long" });
+      const going = rsvps[ev.key], full = ev.spots_left === 0 && !going;
+      const region = REGIONS.find((r) => r.id === ev.region);
+      return `<article class="event reveal in">
+        <div class="event-date"><div class="m">${d.toLocaleDateString("en-US", { month: "short" })}</div><div class="d">${d.getDate()}</div><div class="y">${d.getFullYear()}</div></div>
+        <div><span class="event-type">${esc(ev.type || "Event")}</span>${region ? `<span class="event-type">Region ${region.num} · ${esc(region.name)}</span>` : ""}${ev.sample ? '<span class="event-type sample">Example</span>' : ""}
+          <h3>${esc(ev.title)}</h3><p class="where">${day}, ${time} · ${esc(ev.place || "")}</p><p class="desc">${esc(ev.desc || "")}</p>
+          ${ev.spots_left != null ? `<p class="spots${ev.spots_left <= 3 ? " low" : ""}">${ev.spots_left ? `${ev.spots_left} of ${ev.capacity} spots left` : "This shift is full"}</p>` : ""}</div>
+        <div class="event-actions">
+          <button class="btn btn-primary btn-sm${going ? " going" : ""}" data-rsvp="${esc(ev.key)}"${full ? " disabled" : ""}>${going ? "✓ Going" : full ? "Full" : SHIFT_TYPES.includes(ev.type) ? "Sign up" : "RSVP"}</button>
+          <button class="btn btn-ghost btn-sm" data-ics="${esc(ev.key)}">+ Calendar</button>
+        </div>
+      </article>`;
+    }).join("") : `<div class="event-empty"><p class="lede">New events and volunteer shifts are being scheduled now.</p><a href="#join" class="btn btn-primary btn-sm">Join the team to hear first</a></div>`;
+  }
+  async function loadEvents() {
+    let list = null;
+    if (!C.preview) { try { list = (await api("/api/events")).events; } catch { /* fall back below */ } }
+    if (!list) {
+      // Preview / offline: show the example events from config.js, clearly labeled
+      const now = Date.now();
+      list = (C.events || []).map((e, i) => ({ ...e, key: `cfg:${i}`, sample: true })).filter((e) => new Date(e.end || e.date).getTime() > now);
+    }
+    events = list.sort((a, b) => new Date(a.date) - new Date(b.date));
+    renderEvents();
+  }
+  eventFilters.addEventListener("click", (e) => { const b = e.target.closest("[data-filter]"); if (b) { eventFilter = b.dataset.filter; renderEvents(); } });
   eventList.addEventListener("click", (e) => {
     const r = e.target.closest("[data-rsvp]");
-    if (r) {
+    if (r && !r.disabled) {
       if (rsvps[r.dataset.rsvp]) return toast("You're already on the list. See you there!");
       openRsvp(events.find((ev) => ev.key === r.dataset.rsvp), r);
     }
     const c = e.target.closest("[data-ics]");
-    if (c) { if (C.preview) toast("Calendar downloads work on the live site."); else downloadICS(C.events[+c.dataset.ics]); }
+    if (c) { if (C.preview) toast("Calendar downloads work on the live site."); else downloadICS(events.find((ev) => ev.key === c.dataset.ics)); }
   });
+  loadEvents();
 
   function openRsvp(ev, btn) {
-    const m = me(), d = new Date(ev.date);
+    const m = me(), d = new Date(ev.date), shift = SHIFT_TYPES.includes(ev.type);
+    const maxGuests = ev.spots_left != null ? Math.max(0, Math.min(5, ev.spots_left - 1)) : 5;
     openModal(`
-      <span class="eyebrow">RSVP</span>
+      <span class="eyebrow">${shift ? "Sign up for this shift" : "RSVP"}</span>
       <h3 id="modalTitle">${esc(ev.title)}</h3>
-      <p style="color:var(--muted);margin-top:-8px">${d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })} · ${d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })} · ${esc(ev.place)}</p>
+      <p style="color:var(--muted);margin-top:-8px">${d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })} · ${d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })} · ${esc(ev.place || "")}</p>
       <form id="rsvpForm" novalidate style="margin-top:22px">
         ${hp()}
         <div class="field"><label for="rName">Your name</label><input id="rName" name="name" autocomplete="name" required value="${esc(m.name || "")}" /><span class="err">Required</span></div>
         <div class="field-row">
           <div class="field"><label for="rEmail">Email</label><input id="rEmail" name="email" type="email" autocomplete="email" required value="${esc(m.email || "")}" /><span class="err">Enter a valid email</span></div>
-          <div class="field"><label for="rGuests">Bringing guests?</label><select id="rGuests" name="guests">${[0, 1, 2, 3, 4, 5].map((n) => `<option value="${n}">${n ? "+" + n : "Just me"}</option>`).join("")}</select></div>
+          <div class="field"><label for="rGuests">${shift ? "Bringing a buddy?" : "Bringing guests?"}</label><select id="rGuests" name="guests">${Array.from({ length: maxGuests + 1 }, (_, n) => `<option value="${n}">${n ? "+" + n : "Just me"}</option>`).join("")}</select></div>
         </div>
         <label class="check" style="margin-bottom:18px"><input type="checkbox" name="updates" checked /><span>Send me campaign updates</span></label>
-        <button class="btn btn-primary" type="submit" style="width:100%">Save my spot</button>
+        <button class="btn btn-primary" type="submit" style="width:100%">${shift ? "Count me in" : "Save my spot"}</button>
       </form>`);
     const f = $("#rsvpForm");
     f.addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!validateFields(f)) return;
       const fd = new FormData(f), b = $("button[type=submit]", f);
-      const data = { event_key: ev.key, event_title: ev.title, event_date: ev.date, name: fd.get("name"), email: fd.get("email"), guests: fd.get("guests"), updates: fd.has("updates"), website: fd.get("website") };
+      const data = { event_key: ev.key, name: fd.get("name"), email: fd.get("email"), guests: fd.get("guests"), updates: fd.has("updates"), website: fd.get("website") };
       busy(b, true, "Saving…");
       try {
         await api("/api/rsvp", data);
         rememberMe({ name: data.name, email: data.email });
         rsvps[ev.key] = true; store.set("rsvps", rsvps);
-        btn.classList.add("going"); btn.textContent = "✓ Going";
-        closeModal(); burst(btn);
-        toast("You're on the list! See you there.");
+        if (ev.spots_left != null) ev.spots_left = Math.max(0, ev.spots_left - 1 - Number(data.guests || 0));
+        closeModal(); renderEvents();
+        const nb = $(`[data-rsvp="${CSS.escape(ev.key)}"]`, eventList); burst(nb || btn);
+        toast(shift ? "You're signed up! Your organizer will be in touch." : "You're on the list! See you there.");
       } catch (err) { toast(err.message); busy(b, false); }
     });
   }
@@ -626,9 +674,11 @@
   function validateFields(root) {
     let ok = true;
     $$("[required]", root).forEach((inp) => {
+      if (inp.disabled) return;
       let valid = inp.value.trim() !== "";
       if (inp.type === "email") valid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(inp.value.trim());
       if (inp.name === "zip") valid = /^\d{5}$/.test(inp.value.trim());
+      if (inp.dataset.min) valid = inp.value.trim().length >= Number(inp.dataset.min);
       const f = inp.closest(".field"); if (f) f.classList.toggle("invalid", !valid);
       if (!valid && ok) { inp.focus(); ok = false; }
     });
@@ -636,11 +686,14 @@
   }
 
   function downloadICS(ev) {
-    const fmt = (s) => { const d = new Date(s); return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, ""); };
-    const end = ev.end || new Date(new Date(ev.date).getTime() + 2 * 3600e3).toISOString();
+    if (!ev) return;
+    // Event times are Michigan local time; write them as floating local times with the Detroit time zone.
+    const local = (s) => String(s).replace(/[-:]/g, "").slice(0, 13) + "00";
+    const end = ev.end || new Date(new Date(ev.date).getTime() + 2 * 3600e3 - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 16);
     const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Team Reece//Events//EN", "BEGIN:VEVENT",
-      `UID:${Date.now()}@teamreece`, `DTSTAMP:${fmt(new Date().toISOString())}`, `DTSTART:${fmt(ev.date)}`, `DTEND:${fmt(end)}`,
-      `SUMMARY:${ev.title}`, `LOCATION:${ev.place}`, `DESCRIPTION:${(ev.desc || "").replace(/\n/g, " ")}`, "END:VEVENT", "END:VCALENDAR"].join("\r\n");
+      `UID:${ev.key}@teamreece`, `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "")}`,
+      `DTSTART;TZID=America/Detroit:${local(ev.date)}`, `DTEND;TZID=America/Detroit:${local(end)}`,
+      `SUMMARY:${ev.title}`, `LOCATION:${ev.place || ""}`, `DESCRIPTION:${(ev.desc || "").replace(/\n/g, " ")}`, "END:VEVENT", "END:VCALENDAR"].join("\r\n");
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar" }));
     a.download = ev.title.replace(/\W+/g, "-").toLowerCase() + ".ics";
@@ -649,29 +702,85 @@
   }
 
   /* =======================================================================
-     JOIN — 3-step volunteer form
+     JOIN — three teams: HQ Office, Regional Leadership, Organizers
+     Team structure lives in src/team.js (published as data/team.js)
      ======================================================================= */
+  const TEAM = window.TR_TEAM;
   const form = $("#joinForm"), steps = $$(".step", form), bars = $$(".progress i", form);
   const prevBtn = $("#prevBtn"), nextBtn = $("#nextBtn");
-  let step = 0;
+  const fRegion = $("#fRegion"), fCounty = $("#fCounty");
+  let step = 0, track = null;
+
+  $("#tracks").innerHTML = TEAM.tracks.map((t) => `
+    <label class="track"><input type="radio" name="team" value="${t.id}" />
+      <span class="track-body">
+        <span class="track-top"><b>${esc(t.name)}</b><em class="${t.application ? "apply" : "now"}">${t.application ? "Apply" : "Start now"}</em></span>
+        <span class="track-tag">${esc(t.tagline)}</span>
+        <span class="track-blurb">${esc(t.blurb)}</span>
+      </span>
+    </label>`).join("");
+  fRegion.innerHTML += REGIONS.map((r) => `<option value="${r.id}">Region ${r.num} · ${esc(r.name)}</option>`).join("");
+  function fillCounties() {
+    const r = REGIONS.find((x) => x.id === fRegion.value);
+    fCounty.innerHTML = `<option value="">${r ? "Select a county…" : "Choose a region first"}</option>` + (r ? r.counties.map((c) => `<option>${esc(c)}</option>`).join("") : "");
+    fCounty.disabled = !r;
+  }
+  fRegion.addEventListener("change", fillCounties); fillCounties();
+
+  function renderStep3() {
+    const t = TEAM.tracks.find((x) => x.id === track); if (!t) return;
+    $("#step3Title").textContent = t.application ? "Your application" : "How you'll help";
+    $("#step3Sub").textContent = t.application ? "Step 3 of 3. Kevin's team reads every application." : "Step 3 of 3. Pick as many as you like.";
+    $("#step3").innerHTML = t.application ? `
+      <div class="field"><label>Role you're applying for</label>
+        <div class="role-list">${t.roles.map((r) => `<label class="role"><input type="radio" name="roles" value="${r.id}" /><span><b>${esc(r.name)}</b><small>${esc(r.desc || "")}</small></span></label>`).join("")}</div>
+        <span class="err" id="roleErr">Choose a role</span></div>
+      <div class="field"><label for="fExp">Relevant experience</label><textarea id="fExp" name="experience" rows="4" required data-min="20" maxlength="3000" placeholder="Jobs, campaigns, organizing, leadership, skills. A few sentences is great."></textarea><span class="err">Tell us a little more (a few sentences)</span></div>
+      <div class="field-row">
+        <div class="field"><label for="fHours">Hours per week</label><select id="fHours" name="hours" required><option value="">Choose…</option>${["Under 5", "5–10", "10–20", "20–30", "Full time"].map((h) => `<option>${h}</option>`).join("")}</select><span class="err">Choose one</span></div>
+        <div class="field"><label for="fLink">LinkedIn or résumé link (optional)</label><input id="fLink" name="link" type="url" inputmode="url" placeholder="https://" maxlength="300" /></div>
+      </div>` : `
+      <div class="field"><div class="checks">${t.roles.map((r) => `<label class="check"><input type="checkbox" name="roles" value="${r.id}" /><span>${esc(r.name)}</span></label>`).join("")}</div><span class="err" id="roleErr">Pick at least one</span></div>
+      <p class="form-label">When are you free?</p>
+      <div class="checks">${["Weekday evenings", "Weekends", "Weekday daytime", "Remote only"].map((w) => `<label class="check"><input type="checkbox" name="when" value="${w}" /><span>${w}</span></label>`).join("")}</div>`;
+  }
+  function setTrack(id) {
+    track = id;
+    const t = TEAM.tracks.find((x) => x.id === id);
+    $$("input[name=team]", form).forEach((i) => (i.checked = i.value === id));
+    fRegion.required = id === "regional";
+    $("#fPhone").required = !!t?.application;
+    $("#phoneHint").textContent = t?.application ? "" : "(optional)";
+    renderStep3();
+  }
+  $("#tracks").addEventListener("change", (e) => { if (e.target.name === "team") setTrack(e.target.value); });
 
   function setStep(n) {
     step = n;
     steps.forEach((s, i) => s.classList.toggle("active", i === n));
     bars.forEach((b, i) => b.classList.toggle("done", i <= n));
     prevBtn.hidden = n === 0;
-    nextBtn.textContent = n === steps.length - 1 ? "Join the Team ★" : "Next →";
+    const t = TEAM.tracks.find((x) => x.id === track);
+    nextBtn.textContent = n === steps.length - 1 ? (t?.application ? "Submit application" : "Join the Team ★") : "Next →";
   }
   function validate(n) {
-    let ok = true;
-    $$("[required]", steps[n]).forEach((inp) => {
-      let valid = inp.value.trim() !== "";
-      if (inp.type === "email") valid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(inp.value.trim());
-      if (inp.name === "zip") valid = /^\d{5}$/.test(inp.value.trim());
-      inp.closest(".field").classList.toggle("invalid", !valid);
-      if (!valid && ok) { inp.focus(); ok = false; }
-    });
+    if (n === 0 && !track) { toast("Pick a team to continue."); $("#tracks input").focus(); return false; }
+    let ok = validateFields(steps[n]);
+    if (n === 2) {
+      const picked = $$("input[name=roles]:checked", form).length;
+      const f = $("#roleErr")?.closest(".field");
+      if (f) f.classList.toggle("invalid", !picked);
+      if (!picked && ok) { $("input[name=roles]", form)?.focus(); ok = false; }
+    }
     return ok;
+  }
+  function startJoin(teamId, regionId) {
+    form.hidden = false; $("#joinSuccess").classList.remove("show");
+    setTrack(teamId);
+    if (regionId) { fRegion.value = regionId; fillCounties(); }
+    setStep(1);
+    $("#join").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
+    setTimeout(() => $("#fFirst").focus({ preventScroll: true }), 700);
   }
   form.addEventListener("input", (e) => { const f = e.target.closest(".field"); if (f) f.classList.remove("invalid"); });
   form.addEventListener("keydown", (e) => { if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") { e.preventDefault(); nextBtn.click(); } });
@@ -679,27 +788,33 @@
   nextBtn.addEventListener("click", async () => {
     if (!validate(step)) return;
     if (step < steps.length - 1) return setStep(step + 1);
-    const fd = new FormData(form);
+    const fd = new FormData(form), t = TEAM.tracks.find((x) => x.id === track);
     const entry = {
-      first: fd.get("first").trim(), last: fd.get("last").trim(), email: fd.get("email").trim(), phone: (fd.get("phone") || "").trim(),
-      zip: fd.get("zip").trim(), region: fd.get("region"), help: fd.getAll("help"), when: fd.getAll("when"),
+      team: track, roles: fd.getAll("roles"), first: fd.get("first").trim(), last: fd.get("last").trim(), email: fd.get("email").trim(),
+      phone: (fd.get("phone") || "").trim(), zip: fd.get("zip").trim(), region: fd.get("region") || "", county: fd.get("county") || "",
+      experience: (fd.get("experience") || "").trim(), hours: fd.get("hours") || "", link: (fd.get("link") || "").trim(), when: fd.getAll("when"),
       message: (fd.get("message") || "").trim(), updates: fd.has("updates"), website: fd.get("website")
     };
-    busy(nextBtn, true, "Joining…");
-    try {
-      await api("/api/volunteer", entry);
-    } catch (err) { toast(err.message); busy(nextBtn, false); return; }
+    busy(nextBtn, true, t.application ? "Submitting…" : "Joining…");
+    try { await api("/api/volunteer", entry); }
+    catch (err) { toast(err.message); busy(nextBtn, false); return; }
     busy(nextBtn, false);
     rememberMe({ name: `${entry.first} ${entry.last}`, email: entry.email, zip: entry.zip });
     const region = REGIONS.find((r) => r.id === entry.region);
+    const roleNames = entry.roles.map((id) => t.roles.find((r) => r.id === id)?.name).filter(Boolean);
+    $("#joinSuccessTitle").textContent = t.application ? "Application Received" : "Welcome to the Team";
+    $("#joinSuccessText").textContent = t.application
+      ? `Thank you for applying to Team Reece's ${t.name}. Kevin's team reads every application and will reach out to set up a conversation.`
+      : "You're officially an organizer. Your regional team will reach out with your first shift. Share this with one friend.";
     $("#memberCard").innerHTML = `
       <div class="mc-top"><span>TEAM<b>REECE</b>HQ</span><span>★</span></div>
-      <div><div class="mc-meta">Founding Member</div><div class="mc-name">${esc(entry.first)} ${esc(entry.last)}</div></div>
-      <div class="mc-top" style="color:var(--muted)"><span>${esc(region ? region.name : "Michigan")}</span><span>Est. ${new Date().getFullYear()}</span></div>`;
+      <div><div class="mc-meta">${t.application ? `Applicant · ${esc(t.name)}` : "Founding Organizer"}</div><div class="mc-name">${esc(entry.first)} ${esc(entry.last)}</div>
+        ${roleNames.length ? `<div class="mc-meta" style="margin-top:4px;color:#cfdcff">${esc(roleNames.slice(0, 2).join(" · "))}</div>` : ""}</div>
+      <div class="mc-top" style="color:var(--muted)"><span>${esc(region ? `Region ${region.num} · ${region.name}` : "Michigan")}</span><span>Est. ${new Date().getFullYear()}</span></div>`;
     form.hidden = true; $("#joinSuccess").classList.add("show");
     burst();
   });
-  $("#joinAgain").addEventListener("click", () => { form.reset(); form.hidden = false; $("#joinSuccess").classList.remove("show"); setStep(0); });
+  $("#joinAgain").addEventListener("click", () => { form.reset(); fillCounties(); track = null; form.hidden = false; $("#joinSuccess").classList.remove("show"); setStep(0); });
   $("#shareJoin").addEventListener("click", () => share("I just joined Team Reece. The movement starts here. Join me!"));
 
   /* =======================================================================

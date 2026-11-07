@@ -32,7 +32,8 @@ window.CAMPAIGN = {
   // Finance Act / FEC rules). Replace with your committee's exact name/address.
   paidFor: "Paid for by Team Reece HQ.",
 
-  // Upcoming events. Dates are ISO (YYYY-MM-DDTHH:MM). Shown in order.
+  // EXAMPLE events, shown (labeled "Example") only in the offline preview.
+  // On the live site, events and volunteer shifts come from Campaign HQ → Events.
   events: [
     { title: "Team Reece Kickoff", date: "2026-12-06T18:00", end: "2026-12-06T20:00", place: "Lansing, MI", type: "Rally",
       desc: "The official launch. Meet the team, hear the vision, and sign up to build the movement." },

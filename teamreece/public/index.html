@@ -15,6 +15,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Michroma&family=Montserrat:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700;1,800;1,900&family=Playfair+Display:ital,wght@0,900;1,700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <script src="config.js"></script>
+  <script src="data/michigan-map.js"></script>
+  <script src="data/team.js"></script>
 </head>
 <body>
 
@@ -27,12 +29,7 @@
         <path d="M22,214 C110,140 230,98 336,86" fill="none" stroke="#05070c" stroke-width="3" stroke-linecap="round" transform="translate(0,7)" opacity=".9" />
         <polygon class="star" fill="#fff" points="360,55 366.5,73.1 385.7,73.7 370.5,85.4 375.9,103.8 360,93 344.1,103.8 349.5,85.4 334.3,73.7 353.5,73.1" />
       </symbol>
-      <g id="michigan">
-        <!-- Upper Peninsula (stylized) -->
-        <path d="M40,98 L70,84 L110,78 L132,60 L162,38 L158,54 L148,72 L180,58 L205,66 L230,52 L250,70 L290,64 L325,66 L338,80 L350,96 L346,112 L328,118 L310,132 L290,126 L265,132 L240,136 L222,148 L205,156 L188,176 L172,196 L160,180 L140,160 L110,142 L80,128 L55,118 Z" />
-        <!-- Lower Peninsula (stylized mitten) -->
-        <path d="M296,160 L318,168 L340,176 L360,196 L372,214 L370,236 L356,262 L366,282 L384,272 L402,266 L420,284 L424,302 L414,320 L418,338 L408,356 L398,374 L392,392 L386,410 L236,410 L230,388 L226,360 L228,330 L236,300 L246,272 L250,246 L258,222 L264,198 L272,188 L278,204 L286,190 L288,172 Z" />
-      </g>
+      <g id="michigan"><!-- filled from data/michigan-map.js (U.S. Census Bureau boundaries) --></g>
     </defs>
   </svg>
 
@@ -66,7 +63,7 @@
     <!-- ================= HERO ================= -->
     <section class="hero">
       <canvas id="stars" aria-hidden="true"></canvas>
-      <svg class="hero-map" viewBox="20 20 420 410" aria-hidden="true"><use href="#michigan" /></svg>
+      <svg class="hero-map" viewBox="0 0 600 640" aria-hidden="true"><use href="#michigan" /></svg>
 
       <div class="hero-content wrap">
         <svg class="hero-logo" viewBox="0 0 400 260" role="img" aria-label="Team Reece R logo"><use href="#logo-mark" /></svg>
@@ -170,8 +167,9 @@
           <div class="stat"><div class="stat-num" data-count="83">0</div><div class="stat-label">Counties to reach</div></div>
           <div class="stat"><div class="stat-num" data-count="10" data-suffix="M+">0</div><div class="stat-label">Michiganders</div></div>
           <div class="stat"><div class="stat-num" data-count="3288" data-suffix=" mi">0</div><div class="stat-label">Freshwater shoreline</div></div>
-          <div class="stat"><div class="stat-num" data-count="1">0</div><div class="stat-label">Movement</div></div>
+          <div class="stat"><div class="stat-num" data-count="10">0</div><div class="stat-label">Regions to organize</div></div>
         </div>
+        <p class="sources">Sources: <a href="https://www.census.gov/quickfacts/fact/table/MI/POP010220" target="_blank" rel="noopener">U.S. Census Bureau, 2020 Census</a> (Michigan population 10,077,331; 83 counties) · <a href="https://www.michigan.gov/egle/about/organization/water-resources/shoreland-management" target="_blank" rel="noopener">Michigan EGLE</a> (3,288 miles of Great Lakes shoreline) · Regions: State of Michigan Prosperity Regions</p>
       </div>
     </section>
 
@@ -218,18 +216,18 @@
       <div class="wrap">
         <div class="section-head reveal">
           <span class="eyebrow">Every Corner</span>
-          <h2 class="h-display">One State.<br /><span class="blue">One Team.</span></h2>
-          <p class="lede">Tap a region to see what's at stake there and how to help organize where you live.</p>
+          <h2 class="h-display">83 Counties.<br /><span class="blue">One Team.</span></h2>
+          <p class="lede">Michigan's 10 official regions, county by county. Tap a region to see who lives there, what's at stake, and how to help organize where you live.</p>
         </div>
         <div class="map-grid">
-          <div class="reveal">
-            <svg class="mi-map" id="miMap" viewBox="20 20 440 410" role="group" aria-label="Map of Michigan regions">
-              <g class="land"><use href="#michigan" /></g>
-              <g id="pins"></g>
-            </svg>
+          <div class="reveal map-wrap">
+            <svg class="mi-map" id="miMap" viewBox="0 0 600 640" role="group" aria-label="Map of Michigan's 83 counties in 10 regions"></svg>
+            <div class="map-tip" id="mapTip" role="status" hidden></div>
+            <div class="region-chips" id="regionChips" role="tablist" aria-label="Choose a region"></div>
           </div>
           <div class="region-card reveal" id="regionCard" aria-live="polite"></div>
         </div>
+        <p class="sources">Regions: <a href="https://www.michigan.gov/treasury/local/lafd/prosperity" target="_blank" rel="noopener">State of Michigan Prosperity Regions</a> · County boundaries: U.S. Census Bureau cartographic boundary files · Population: <a href="https://data.census.gov/table/DECENNIALPL2020.P1?g=040XX00US26$0500000" target="_blank" rel="noopener">U.S. Census Bureau, 2020 Census</a>, loaded live from the Census Bureau</p>
       </div>
     </section>
 
@@ -239,7 +237,8 @@
         <div class="section-head reveal">
           <span class="eyebrow">On the Road</span>
           <h2 class="h-display">Upcoming<br /><span class="blue">Events.</span></h2>
-          <p class="lede">Come say hi. Every event is open to the public. RSVP so we save you a seat, and add it to your calendar in one tap.</p>
+          <p class="lede">Town halls, meet-and-greets, and volunteer shifts to knock doors and make calls. RSVP to save your spot and add it to your calendar in one tap.</p>
+          <div class="chips" id="eventFilters" style="margin-top:8px"></div>
         </div>
         <div class="event-list" id="eventList"></div>
       </div>
@@ -251,13 +250,12 @@
         <div class="reveal">
           <span class="eyebrow">Get Involved</span>
           <h2 class="h-display" style="margin:16px 0 22px">Join<br /><span class="blue">The Team.</span></h2>
-          <p class="lede">Movements aren't watched, they're built. Whether you've got five minutes or five nights a week, there's a spot for you.</p>
-          <ul class="join-perks">
-            <li>Get first word on events, announcements, and campaign news</li>
-            <li>Knock doors, make calls, or host a coffee with your neighbors</li>
-            <li>Shape the platform with direct input sessions</li>
-            <li>Become a Region Captain and lead your community</li>
-          </ul>
+          <p class="lede">Movements aren't watched, they're built. Team Reece is organized in three teams, and there's a place for you in every one.</p>
+          <ol class="org-ladder" aria-label="How Team Reece is organized">
+            <li><b>HQ Office</b><span>Kevin's core team: strategy, communications, finance, field and operations.</span></li>
+            <li><b>Regional Leadership</b><span>A Regional Director for each of Michigan's 10 regions, with County Captains in all 83 counties.</span></li>
+            <li><b>Organizers</b><span>The heart of the campaign. Knock doors, make calls, register voters and bring your neighbors.</span></li>
+          </ol>
         </div>
 
         <div class="form-card reveal">
@@ -266,46 +264,34 @@
             <div class="progress" aria-hidden="true"><i class="done"></i><i></i><i></i></div>
 
             <fieldset class="step active" data-step="1">
-              <legend class="step-title">Who are you?</legend>
-              <p class="step-sub">Step 1 of 3, the basics.</p>
-              <div class="field-row">
-                <div class="field"><label for="fFirst">First name</label><input id="fFirst" name="first" autocomplete="given-name" required /><span class="err">Required</span></div>
-                <div class="field"><label for="fLast">Last name</label><input id="fLast" name="last" autocomplete="family-name" required /><span class="err">Required</span></div>
-              </div>
-              <div class="field"><label for="fEmail">Email</label><input id="fEmail" name="email" type="email" autocomplete="email" required /><span class="err">Enter a valid email</span></div>
-              <div class="field-row">
-                <div class="field"><label for="fPhone">Phone (optional)</label><input id="fPhone" name="phone" type="tel" autocomplete="tel" /></div>
-                <div class="field"><label for="fZip">ZIP code</label><input id="fZip" name="zip" inputmode="numeric" maxlength="5" autocomplete="postal-code" required /><span class="err">5-digit ZIP</span></div>
-              </div>
+              <legend class="step-title">Pick your team</legend>
+              <p class="step-sub">Step 1 of 3. You can always do more later.</p>
+              <div class="tracks" id="tracks"></div>
             </fieldset>
 
             <fieldset class="step" data-step="2">
-              <legend class="step-title">How do you want to help?</legend>
-              <p class="step-sub">Step 2 of 3. Pick as many as you like.</p>
-              <div class="checks">
-                <label class="check"><input type="checkbox" name="help" value="Door knocking" /><span>Knock doors</span></label>
-                <label class="check"><input type="checkbox" name="help" value="Phone/text bank" /><span>Phone &amp; text bank</span></label>
-                <label class="check"><input type="checkbox" name="help" value="Host an event" /><span>Host an event</span></label>
-                <label class="check"><input type="checkbox" name="help" value="Social media" /><span>Social media</span></label>
-                <label class="check"><input type="checkbox" name="help" value="Yard sign" /><span>Get a yard sign</span></label>
-                <label class="check"><input type="checkbox" name="help" value="Region captain" /><span>Region Captain</span></label>
+              <legend class="step-title">About you</legend>
+              <p class="step-sub">Step 2 of 3.</p>
+              <div class="field-row">
+                <div class="field"><label for="fFirst">First name</label><input id="fFirst" name="first" autocomplete="given-name" required maxlength="80" /><span class="err">Required</span></div>
+                <div class="field"><label for="fLast">Last name</label><input id="fLast" name="last" autocomplete="family-name" required maxlength="80" /><span class="err">Required</span></div>
               </div>
-              <div class="field"><label for="fRegion">Your region</label>
-                <select id="fRegion" name="region" required><option value="">Select a region…</option></select>
-                <span class="err">Choose your region</span>
+              <div class="field"><label for="fEmail">Email</label><input id="fEmail" name="email" type="email" autocomplete="email" required /><span class="err">Enter a valid email</span></div>
+              <div class="field-row">
+                <div class="field"><label for="fPhone">Phone <span id="phoneHint">(optional)</span></label><input id="fPhone" name="phone" type="tel" autocomplete="tel" /><span class="err">We need a phone number for applications</span></div>
+                <div class="field"><label for="fZip">ZIP code</label><input id="fZip" name="zip" inputmode="numeric" maxlength="5" autocomplete="postal-code" required /><span class="err">5-digit ZIP</span></div>
+              </div>
+              <div class="field-row">
+                <div class="field"><label for="fRegion">Your region</label><select id="fRegion" name="region"><option value="">Select a region…</option></select><span class="err">Choose the region you want to lead</span></div>
+                <div class="field"><label for="fCounty">County</label><select id="fCounty" name="county"><option value="">Select a county…</option></select></div>
               </div>
             </fieldset>
 
             <fieldset class="step" data-step="3">
-              <legend class="step-title">Last thing</legend>
-              <p class="step-sub">Step 3 of 3. When are you free?</p>
-              <div class="checks">
-                <label class="check"><input type="checkbox" name="when" value="Weekday evenings" /><span>Weekday evenings</span></label>
-                <label class="check"><input type="checkbox" name="when" value="Weekends" /><span>Weekends</span></label>
-                <label class="check"><input type="checkbox" name="when" value="Daytime" /><span>Daytime</span></label>
-                <label class="check"><input type="checkbox" name="when" value="Remote only" /><span>Remote only</span></label>
-              </div>
-              <div class="field"><label for="fMsg">What should Kevin know? (optional)</label><textarea id="fMsg" name="message" rows="3" maxlength="3000" placeholder="The issue that keeps you up at night, an idea, a question…"></textarea></div>
+              <legend class="step-title" id="step3Title">Your role</legend>
+              <p class="step-sub" id="step3Sub">Step 3 of 3.</p>
+              <div id="step3"></div>
+              <div class="field"><label for="fMsg">Anything else Kevin should know? (optional)</label><textarea id="fMsg" name="message" rows="2" maxlength="3000" placeholder="The issue that keeps you up at night, an idea, a question…"></textarea></div>
               <label class="check"><input type="checkbox" name="updates" checked /><span>Email me campaign news and events</span></label>
             </fieldset>
 
@@ -318,8 +304,8 @@
 
           <div class="success" id="joinSuccess">
             <div class="big-star">★</div>
-            <h3>Welcome to the Team</h3>
-            <p>You're officially in. Watch your inbox, and share this with one friend.</p>
+            <h3 id="joinSuccessTitle">Welcome to the Team</h3>
+            <p id="joinSuccessText">You're officially in. Watch your inbox, and share this with one friend.</p>
             <div class="member-card" id="memberCard"></div>
             <div style="display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap">
               <button class="btn btn-primary btn-sm" id="shareJoin">Invite a Friend</button>

@@ -11,7 +11,8 @@
     "dev": "node --watch server.js",
     "start": "node server.js",
     "init-admin": "node scripts/init-admin.js",
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "build-data": "node scripts/build-data.js"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",
@@ -20,5 +21,10 @@
     "dotenv": "^16.4.5",
     "express": "^5.1.0",
     "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "d3-geo": "^3.1.1",
+    "topojson-client": "^3.1.0",
+    "us-atlas": "^3.0.1"
   }
 }
