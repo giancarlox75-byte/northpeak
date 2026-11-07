@@ -6,9 +6,10 @@
    ========================================================================= */
 window.CAMPAIGN = {
   // Candidate
-  firstName: "",            // e.g. "Jordan" — leave blank to just show "Reece"
+  firstName: "Kevin",
   lastName: "Reece",
   brand: "Team Reece",
+  hometown: "Flint",
   handle: "officialreecehq",
 
   // Office — leave office blank until you decide. The site will read

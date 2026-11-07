@@ -46,7 +46,7 @@
   /* ---------- Campaign config → page ---------- */
   const fullName = [C.firstName, C.lastName].filter(Boolean).join(" ") || "Reece";
   const officeLabel = C.office ? `${C.lastName || "Reece"} for ${C.office}${C.district ? " · " + C.district : ""}` : "";
-  $$("[data-office-line]").forEach((el) => (el.textContent = officeLabel || `${C.state || "Michigan"} · A Stronger Future`));
+  $$("[data-office-line]").forEach((el) => (el.textContent = officeLabel || `${fullName} · ${C.state || "Michigan"}`));
   $$("[data-name-signature]").forEach((el) => (el.textContent = `— ${fullName}`));
   if (C.office) {
     $$("[data-office-faq]").forEach((el) => (el.textContent = `${fullName} is running for ${C.office}${C.district ? " in " + C.district : ""}, ${C.state || "Michigan"}. Join the team to help us win.`));
@@ -215,7 +215,7 @@
   })();
 
   /* ---------- Ticker ---------- */
-  const tickerItems = ["The Movement Starts Here", "Building a Stronger Michigan", "Build • Fight • Win", "From the U.P. to Monroe", "Join Team Reece"];
+  const tickerItems = ["The Movement Starts Here", "Born & Raised in Flint", "Technology for the Common Good", "Strong Schools", "Affordable Basics", "Higher Wages", "Build • Fight • Win", "Join Team Reece"];
   $("#ticker").innerHTML = [...tickerItems, ...tickerItems, ...tickerItems, ...tickerItems].map((t) => `<span>${t}</span>`).join("");
 
   /* =======================================================================
@@ -223,83 +223,100 @@
      Draft positions — edit freely. Each issue: problem, plan bullets, why.
      ======================================================================= */
   const ICONS = {
-    dollar: "M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6",
-    factory: "M2 20h20M4 20V10l5 3V10l5 3V6l6 4v10",
-    road: "M4 20L8 4M20 20L16 4M12 5v2M12 10v3M12 16v3",
+    chip: "M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3M6 6h12v12H6zM10 10h4v4h-4z",
+    bolt: "M13 2L4 14h7l-1 8 9-12h-7l1-8z",
     school: "M22 10L12 5 2 10l10 5 10-5zM6 12v5c3 2 9 2 12 0v-5",
-    health: "M3 12h4l2-5 4 10 2-5h6",
-    water: "M12 2.7s-7 7.6-7 12.3a7 7 0 0 0 14 0c0-4.7-7-12.3-7-12.3z",
+    cart: "M3 4h2l2.4 11.2a2 2 0 0 0 2 1.8h7.7a2 2 0 0 0 2-1.6L21 8H6M10 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2z",
+    wage: "M3 17l6-6 4 4 8-8M15 7h6v6",
     home: "M3 11l9-8 9 8M5 10v10h14V10M10 20v-6h4v6",
-    shield: "M12 2l8 3v7c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V5l8-3z",
+    health: "M3 12h4l2-5 4 10 2-5h6",
+    scale: "M12 3v18M7 21h10M5 7h14M5 7l-3 7a3 3 0 0 0 6 0L5 7zM19 7l-3 7a3 3 0 0 0 6 0l-3-7z",
     eye: "M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z",
-    store: "M3 9l1.5-5h15L21 9M3 9v11h18V9M3 9h18M9 20v-6h6v6",
-    flag: "M4 21V4M4 4h13l-2 4 2 4H4"
+    water: "M12 2.7s-7 7.6-7 12.3a7 7 0 0 0 14 0c0-4.7-7-12.3-7-12.3z"
   };
   const icon = (k) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${ICONS[k]}"/></svg>`;
 
-  const CATS = { all: "All Issues", economy: "Economy", families: "Families", infrastructure: "Infrastructure", environment: "Environment", community: "Community" };
+  const CATS = { all: "All Issues", technology: "Technology", economy: "Economy", families: "Families", community: "Community" };
+  // `top: true` marks Kevin's core priorities (shown first, with a badge).
   const ISSUES = [
-    { id: "costs", cat: "economy", icon: "dollar", label: "Cost of living", title: "Lower Costs for Working Families",
-      short: "Groceries, gas, utilities, childcare. Everything costs more. Michigan families need relief now.",
-      problem: "Paychecks haven't kept pace with the cost of everyday life. Families are making impossible choices between bills, and too many are one emergency away from falling behind.",
-      plan: ["Push back on utility rate hikes and demand reliability for what we already pay", "Expand childcare access so parents can work without going broke", "Cut red tape and fees that hit everyday Michiganders hardest", "Target tax relief to working families and seniors on fixed incomes"],
-      why: "When families keep more of what they earn, they spend it in their communities, and the whole state gets stronger." },
-    { id: "jobs", cat: "economy", icon: "factory", label: "Jobs & manufacturing", title: "Make It in Michigan",
-      short: "Good-paying jobs, a skilled workforce, and the next generation of Michigan manufacturing.",
-      problem: "Michigan built the modern world. But too many good jobs have left, and too many young people feel they have to move away to get ahead.",
-      plan: ["Bring advanced manufacturing and supply chains home to Michigan", "Make skilled-trades training and apprenticeships free and accessible", "Partner with community colleges so training matches real openings", "Hold companies that take public incentives accountable for the jobs they promise"],
-      why: "A job that pays enough to raise a family is the foundation of everything else." },
-    { id: "roads", cat: "infrastructure", icon: "road", label: "Roads & infrastructure", title: "Fix the Roads. For Real.",
-      short: "Roads, bridges, water pipes and broadband that work, built by Michigan workers.",
-      problem: "Michigan drivers pay hundreds a year in car repairs from bad roads. Aging water systems and spotty internet hold back entire communities.",
-      plan: ["Long-term, transparent road funding, not one-year patches", "Prioritize repairs by need, with a public map of where the money goes", "Replace lead service lines and invest in clean drinking water", "Close the rural broadband gap so every home can connect"],
-      why: "Infrastructure is how people get to work, kids get to school, and businesses get their goods to market." },
-    { id: "schools", cat: "families", icon: "school", label: "Education", title: "Schools That Set Kids Up to Win",
-      short: "Strong public schools, respected teachers, and real paths to college or a career.",
-      problem: "Too many kids are falling behind in reading and math, teachers are leaving the profession, and families feel shut out of decisions.",
-      plan: ["Focus on early literacy: every child reading by third grade", "Recruit and keep great teachers with competitive pay and support", "Bring career and technical education back into every high school", "Give parents clear, honest information about how their schools are doing"],
-      why: "Education is the surest path to opportunity, and a strong workforce is Michigan's best economic plan." },
-    { id: "health", cat: "families", icon: "health", label: "Healthcare", title: "Healthcare You Can Afford",
-      short: "Lower prescription costs, rural hospitals that stay open, and mental-health care when you need it.",
-      problem: "Medical bills are a leading source of debt. Rural hospitals are closing, and mental-health care can mean waiting months.",
-      plan: ["Fight for lower prescription drug costs and price transparency", "Keep rural hospitals and clinics open with targeted support", "Expand access to mental-health and addiction treatment", "Protect coverage for people with pre-existing conditions"],
-      why: "Nobody should go broke getting sick, or drive two hours to see a doctor." },
-    { id: "lakes", cat: "environment", icon: "water", label: "Great Lakes & water", title: "Protect the Great Lakes",
-      short: "Our lakes are our identity and our economy. Keep them clean for the next generation.",
-      problem: "Invasive species, aging pipelines, runoff and pollution threaten the water 40 million people depend on, along with Michigan's tourism and fishing economy.",
-      plan: ["Strong protections against pollution and invasive species", "Make polluters, not taxpayers, pay for cleanup", "Invest in shoreline resilience and local water infrastructure", "Support the farmers, anglers and outdoor businesses who steward our land"],
-      why: "The Great Lakes aren't just scenery. They're jobs, drinking water, and a way of life." },
+    { id: "ai", top: true, cat: "technology", icon: "chip", label: "AI & tech safety", title: "AI That Works for People",
+      short: "AI is changing everything. Michigan needs smart rules so it's safe, fair, and used for the public good.",
+      problem: "AI is already making decisions about our lives: who gets a job interview, what an insurance claim pays, what our kids see online. Right now there are almost no rules about how it's used, who's accountable when it gets things wrong, or how our personal data is protected.",
+      plan: ["Clear guardrails for AI used in hiring, housing, lending, healthcare, and policing, with a human in the loop on decisions that change people's lives",
+        "Strong data privacy protections so Michiganders own their personal information",
+        "Require disclosure when you're talking to an AI or seeing AI-generated political ads and deepfakes",
+        "Protect state systems, schools, and hospitals from AI-powered cyberattacks and scams that target seniors",
+        "Make government lead by example: transparent, tested, and accountable use of AI in state agencies"],
+      why: "Technology should make life better for working people, not just bigger profits for a few. We can lead on AI and still make sure it's safe." },
+    { id: "innovation", top: true, cat: "technology", icon: "bolt", label: "Michigan innovation", title: "Keep Michigan on Top",
+      short: "Michigan built the auto age. Now let's lead the next one: tech, clean energy, and the jobs that come with it.",
+      problem: "Michigan's universities produce world-class talent, and too much of it leaves. Too many communities still don't have reliable high-speed internet, and too many workers are left out as industries change.",
+      plan: ["Grow tech, advanced manufacturing, and mobility jobs across the whole state, not just one or two cities",
+        "Close the broadband gap so every home, school, and small business can connect",
+        "Free and low-cost training so workers can learn new skills as AI and automation change their jobs",
+        "Help homegrown startups get funding and stay in Michigan",
+        "Partner universities and community colleges with local employers"],
+      why: "If Michigan leads in technology, Michigan workers win. Our kids shouldn't have to leave the state to build their future." },
+    { id: "schools", top: true, cat: "families", icon: "school", label: "Strong schools", title: "Strong Schools for Every Kid",
+      short: "Great public schools, respected teachers, and classrooms ready for the world our kids are growing into.",
+      problem: "Too many kids are falling behind in reading and math, teachers are leaving the profession, and too many classrooms don't have the tools to prepare students for a tech-driven world.",
+      plan: ["Pay and support teachers like the professionals they are, so great teachers stay",
+        "Early literacy: every child reading by third grade",
+        "Computer science, digital literacy, and responsible AI education in every school",
+        "Bring career, technical, and skilled-trades programs back into high schools",
+        "Mental-health support and counselors so students can focus on learning",
+        "Fair funding, so a kid's ZIP code doesn't decide their future"],
+      why: "Education is the surest path to opportunity, and it's how Michigan stays at the top." },
+    { id: "costs", top: true, cat: "economy", icon: "cart", label: "Affordable basics", title: "Make the Basics Affordable",
+      short: "Groceries, rent, utilities, childcare, prescriptions. The basics shouldn't break the bank.",
+      problem: "Paychecks haven't kept up with the cost of living. Families are choosing between groceries, rent, and the electric bill, and too many are one emergency away from falling behind.",
+      plan: ["Push back on utility rate hikes, and demand reliable power for what we already pay",
+        "Expand affordable childcare so parents can work without going broke",
+        "Lower prescription drug costs and crack down on price gouging",
+        "Target tax relief to working families and seniors on fixed incomes",
+        "Cut junk fees and hidden charges on everyday bills"],
+      why: "When families can afford the basics, they can plan, save, and build a future. That makes the whole state stronger." },
+    { id: "wages", top: true, cat: "economy", icon: "wage", label: "Higher wages", title: "Raise Wages. Reward Work.",
+      short: "A full day's work should pay for a good life. It's time Michigan wages caught up.",
+      problem: "Costs keep climbing while wages lag behind. Too many people work full time, sometimes more than one job, and still can't get ahead.",
+      plan: ["Raise wages so they keep pace with the real cost of living",
+        "Protect workers' right to organize and bargain for fair pay",
+        "Fight wage theft and make sure people get paid for every hour they work",
+        "Close pay gaps so equal work gets equal pay",
+        "Make sure companies that get public incentives create good-paying jobs"],
+      why: "Higher wages don't just help workers. They get spent at local businesses and keep Michigan communities strong." },
     { id: "housing", cat: "economy", icon: "home", label: "Housing", title: "Homes Families Can Afford",
-      short: "More housing, lower rents, and a real shot at owning a home in the community you love.",
-      problem: "From Grand Rapids to Traverse City, young families and workers are being priced out of the towns they grew up in.",
-      plan: ["Cut the red tape that blocks new starter homes", "Help first-time buyers with down-payment support", "Rehab vacant and blighted properties into homes", "Protect renters from unfair fees and junk charges"],
+      short: "More housing, fair rents, and a real shot at owning a home in the community you love.",
+      problem: "From Flint to Grand Rapids to Traverse City, young families and workers are being priced out of the towns they grew up in.",
+      plan: ["Cut the red tape that blocks new starter homes", "Help first-time buyers with down-payment support", "Turn vacant and blighted properties into homes", "Protect renters from unfair fees and junk charges"],
       why: "A home is stability for kids, a foundation for families, and the backbone of strong neighborhoods." },
-    { id: "safety", cat: "community", icon: "shield", label: "Public safety", title: "Safe Neighborhoods",
-      short: "Every family deserves to feel safe at home, at school, and on their street.",
-      problem: "Communities across Michigan are dealing with crime, slow emergency response, and police and fire departments stretched thin.",
-      plan: ["Fully staff police, fire, and EMS with training that builds trust", "Invest in prevention: youth programs, mental-health response, addiction treatment", "Crack down on repeat violent offenders and illegal guns", "Make schools safe, secure places to learn"],
-      why: "Safety and justice go together. Strong communities need both." },
-    { id: "accountability", cat: "community", icon: "eye", label: "Accountability", title: "Government That Answers to You",
-      short: "Transparency, ethics, and leaders who serve the people, not themselves.",
-      problem: "Michigan has some of the weakest transparency laws in the country. Too many decisions happen behind closed doors.",
-      plan: ["Extend open-records laws to cover all elected offices", "Ban lawmakers from becoming lobbyists the minute they leave office", "Publish clear, plain-language reports on spending and results", "Hold regular town halls in every corner of the district"],
+    { id: "wellness", cat: "families", icon: "health", label: "Health & wellness", title: "Healthy Communities",
+      short: "Affordable care, mental-health support, and community wellness in every corner of Michigan.",
+      problem: "Medical bills are a leading source of debt, rural hospitals are struggling, and getting mental-health care can mean waiting months.",
+      plan: ["Expand access to mental-health and addiction care, including in schools", "Keep rural hospitals and clinics open", "Use telehealth and technology to bring care closer to home", "Protect coverage for people with pre-existing conditions"],
+      why: "Healthy people build strong communities. Nobody should go broke getting sick." },
+    { id: "justice", cat: "community", icon: "scale", label: "Access to justice", title: "Justice for Everyone",
+      short: "Your rights shouldn't depend on whether you can afford a lawyer.",
+      problem: "Every year, thousands of Michiganders face evictions, debt cases, and family court without any legal help, simply because they can't afford it.",
+      plan: ["Expand funding for legal aid organizations across the state", "Right to counsel for families facing eviction", "Make court forms and processes simpler, with plain-language and online tools", "Clear old records so people can get jobs and housing"],
+      why: "Kevin has seen this up close at Legal Aid of Western Michigan. Equal justice under law has to mean equal access to it." },
+    { id: "accountability", cat: "community", icon: "eye", label: "Open government", title: "Government That Answers to You",
+      short: "Transparency, ethics, and modern tools that let you see what your government is doing.",
+      problem: "Michigan has some of the weakest transparency laws in the country, and too many decisions happen behind closed doors.",
+      plan: ["Extend open-records laws to the Legislature and Governor's office", "Put state spending and results online in plain language", "Slow the revolving door between lawmaking and lobbying", "Hold regular town halls, in person and online"],
       why: "Trust is earned. You deserve to know who's working for you, and how." },
-    { id: "mainstreet", cat: "economy", icon: "store", label: "Small business & farms", title: "Back Main Street & Family Farms",
-      short: "The local shops, family farms and small businesses that make Michigan communities home.",
-      problem: "Small businesses and family farms face rising costs, complicated rules, and competition from giants that don't play by the same rules.",
-      plan: ["Simplify licensing and permitting for small businesses", "Expand access to capital for entrepreneurs in every community", "Support family farms and Michigan-grown products", "Keep downtowns vibrant with local investment"],
-      why: "Small businesses create most new jobs, and they reinvest right back into our towns." },
-    { id: "veterans", cat: "community", icon: "flag", label: "Veterans", title: "Keep Faith with Veterans",
-      short: "Those who served deserve care, jobs, and respect when they come home.",
-      problem: "Veterans still face long waits for care, trouble turning military skills into civilian jobs, and too little mental-health support.",
-      plan: ["Cut wait times and improve access to care close to home", "Recognize military training for civilian licenses and jobs", "Expand veteran mental-health and suicide-prevention services", "Support military families and spouses"],
-      why: "We made a promise to those who served. Keeping it is not optional." }
+    { id: "lakes", cat: "community", icon: "water", label: "Clean water", title: "Clean Water & Great Lakes",
+      short: "Safe drinking water in every home, and Great Lakes protected for the next generation.",
+      problem: "Aging pipes, pollution, and underfunded water systems put families at risk. Flint knows this better than anywhere.",
+      plan: ["Replace every lead service line in Michigan", "Make polluters, not taxpayers, pay for cleanup", "Invest in local water infrastructure and affordable water bills", "Protect the Great Lakes from pollution and invasive species"],
+      why: "Clean, safe, affordable water is a basic right, and the Great Lakes are who we are." }
   ];
 
   const chips = $("#chips"), grid = $("#issueGrid");
   chips.innerHTML = Object.entries(CATS).map(([k, v], i) => `<button class="chip${i ? "" : " active"}" role="tab" aria-selected="${!i}" data-cat="${k}">${v}</button>`).join("");
   grid.innerHTML = ISSUES.map((it) => `
-    <button class="issue reveal" data-id="${it.id}" data-cat="${it.cat}">
+    <button class="issue reveal${it.top ? " featured" : ""}" data-id="${it.id}" data-cat="${it.cat}">
+      ${it.top ? '<span class="top-badge">Top priority</span>' : ""}
       <span class="issue-icon">${icon(it.icon)}</span>
       <span class="issue-tag">${CATS[it.cat]}</span>
       <h3>${it.title}</h3>
@@ -425,7 +442,8 @@
     $("#prioTitle").textContent = "Pick your top 3";
     renderPickState();
   });
-  const savedPicks = store.get("myPicks");
+  let savedPicks = store.get("myPicks");
+  if (savedPicks && !savedPicks.every((id) => ISSUES.some((it) => it.id === id))) { store.del("myPicks"); store.del("tally"); savedPicks = null; }
   if (savedPicks) renderResults(savedPicks); else renderPickState();
 
   /* =======================================================================
@@ -433,21 +451,21 @@
      ======================================================================= */
   const REGIONS = [
     { id: "up", name: "Upper Peninsula", x: 205, y: 104, lx: 0, ly: 26, anchor: "middle", cities: "Marquette · Sault Ste. Marie · Escanaba · Houghton",
-      focus: "Broadband that actually reaches, mining and timber jobs with a future, and making sure Lansing never forgets the U.P.", issues: ["roads", "jobs", "health"] },
+      focus: "Broadband that actually reaches, mining and timber jobs with a future, and making sure Lansing never forgets the U.P.", issues: ["innovation", "wellness", "costs"] },
     { id: "north", name: "Northern Michigan", x: 318, y: 212, lx: 12, ly: 4, anchor: "start", cities: "Traverse City · Gaylord · Petoskey · Alpena",
-      focus: "Housing that workers can afford in tourism towns, clean lakes, and year-round jobs, not just summer ones.", issues: ["housing", "lakes", "mainstreet"] },
+      focus: "Housing that workers can afford in tourism towns, clean lakes, and year-round jobs, not just summer ones.", issues: ["housing", "wages", "lakes"] },
     { id: "west", name: "West Michigan", x: 254, y: 320, lx: -12, ly: 4, anchor: "end", cities: "Grand Rapids · Holland · Muskegon",
-      focus: "Keeping a growing region affordable, backing manufacturers, and protecting the Lake Michigan shoreline.", issues: ["housing", "jobs", "lakes"] },
+      focus: "Keeping a growing region affordable, backing manufacturers, and protecting the Lake Michigan shoreline.", issues: ["housing", "innovation", "schools"] },
     { id: "bay", name: "Great Lakes Bay", x: 346, y: 290, lx: 0, ly: -14, anchor: "middle", cities: "Saginaw · Bay City · Midland · Flint",
-      focus: "Clean, safe drinking water, revitalized downtowns, and the next generation of manufacturing jobs.", issues: ["roads", "jobs", "safety"] },
+      focus: "Kevin's hometown region. Clean, safe water in every home, strong schools, revitalized downtowns, and the next generation of good-paying jobs.", issues: ["lakes", "schools", "wages"], home: true },
     { id: "thumb", name: "The Thumb", x: 400, y: 292, lx: 10, ly: 4, anchor: "start", cities: "Port Huron · Bad Axe · Lapeer · Sandusky",
-      focus: "Family farms, rural hospitals that stay open, and roads that hold up to the work.", issues: ["mainstreet", "health", "roads"] },
+      focus: "Family farms, rural hospitals that stay open, and roads that hold up to the work.", issues: ["wellness", "costs", "innovation"] },
     { id: "capital", name: "Capital Region", x: 314, y: 352, lx: -12, ly: 4, anchor: "end", cities: "Lansing · East Lansing · Jackson",
-      focus: "Opening up state government, supporting students and young workers, and growing good jobs at home.", issues: ["accountability", "schools", "jobs"] },
+      focus: "Opening up state government, supporting students and young workers, and growing good jobs at home.", issues: ["accountability", "ai", "schools"] },
     { id: "metro", name: "Metro Detroit", x: 388, y: 372, lx: 0, ly: 24, anchor: "middle", cities: "Detroit · Warren · Dearborn · Troy · Ann Arbor",
-      focus: "Safe neighborhoods, lower car insurance and living costs, great schools, and a comeback that reaches every block.", issues: ["costs", "safety", "schools"] },
+      focus: "Where Kevin spent part of growing up, in Ann Arbor and Troy. Lower living costs, great schools, tech jobs, and a comeback that reaches every block.", issues: ["costs", "ai", "schools"] },
     { id: "southwest", name: "Southwest Michigan", x: 262, y: 390, lx: 0, ly: 26, anchor: "middle", cities: "Kalamazoo · Battle Creek · Benton Harbor · St. Joseph",
-      focus: "Investing in workers and small towns, strong schools, and protecting farmland and the lakeshore.", issues: ["mainstreet", "schools", "costs"] }
+      focus: "Where Kevin went to college at Western Michigan and worked in Kalamazoo. Investing in workers, students, and small towns, and making sure legal help reaches everyone.", issues: ["justice", "wages", "schools"] }
   ];
   const pinsG = $("#pins"), regionCard = $("#regionCard");
   pinsG.innerHTML = REGIONS.map((r) => `
@@ -464,7 +482,7 @@
     const members = store.get("signups", []).filter((s) => s.region === id).length;
     regionCard.innerHTML = `
       <span class="eyebrow">Region</span>
-      <h3>${r.name}</h3>
+      <h3>${r.name}${r.home ? '<span class="home-badge">Hometown</span>' : ""}</h3>
       <p class="region-cities">${r.cities}</p>
       <p class="region-focus">${r.focus}</p>
       <div class="region-meta">
@@ -488,7 +506,7 @@
       setTimeout(() => $("#fFirst").focus({ preventScroll: true }), 700);
     }
   });
-  showRegion("metro");
+  showRegion("bay");
 
   /* =======================================================================
      EVENTS
@@ -697,6 +715,21 @@
     }
     if (parts.length) requestAnimationFrame(confettiFrame); else { running = false; cctx.clearRect(0, 0, cf.width, cf.height); }
   }
+
+  /* ---------- Meet Kevin timeline: line fills as you scroll ---------- */
+  (function timeline() {
+    const tl = $("#timeline"); if (!tl) return;
+    const items = $$(".tl-item", tl);
+    const update = () => {
+      const r = tl.getBoundingClientRect(), mid = innerHeight * 0.6;
+      const fill = Math.min(1, Math.max(0, (mid - r.top) / r.height));
+      tl.style.setProperty("--fill", fill.toFixed(3));
+      items.forEach((it) => it.classList.toggle("lit", it.getBoundingClientRect().top + 12 < mid));
+    };
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  })();
 
   observeReveals();
 })();

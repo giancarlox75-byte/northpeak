@@ -1,5 +1,7 @@
 # Team Reece: Campaign Website
 
+The campaign site for **Kevin Reece**: born and raised in Flint, WMU political science graduate, building a stronger Michigan.
+
 A campaign platform site built on the **@officialreecehq** branding: black and navy, white, an electric "HERE." blue, the R-and-star mark, the Michigan outline and the Capitol skyline.
 
 It's plain HTML, CSS and JS with no build step. Open `index.html` or deploy the folder to any static host (Vercel, Netlify, GitHub Pages).
@@ -28,9 +30,13 @@ Edit **`config.js`** and the whole site updates:
 - **Donate:** amount picker, one-time or monthly, and a live "your impact" message
 - **Newsletter, FAQ, back-to-top, mobile menu,** and support for reduced motion
 
-## Platform content is a draft
+## Platform content
 
-The issue positions in `app.js` (the `ISSUES` array) are a broadly appealing starting draft. Rewrite them in your own voice and positions before launch. The regions are in `REGIONS` in the same file.
+The platform is built around Kevin's top priorities, marked `top: true` and shown first with a "Top priority" badge: **AI & tech safety, Michigan innovation, strong schools, affordable basics, and higher wages**. Supporting issues are housing, health and wellness, access to justice, open government, and clean water. They're all in the `ISSUES` array in `app.js`. Review every bullet so each one reflects positions you're ready to defend.
+
+## Meet Kevin
+
+The bio and timeline are in the `#about` section of `index.html`. To add a photo, put it at `assets/kevin.jpg` and replace the `KR` placeholder inside `.portrait` with `<img src="assets/kevin.jpg" alt="Kevin Reece">`.
 
 ## Data storage
 
@@ -42,7 +48,9 @@ Before launch, connect the forms to a real backend so you collect everyone's sub
 
 - [ ] Choose the office and fill in `config.js`
 - [ ] Form a committee and update `paidFor` with its exact name and address
-- [ ] Rewrite the platform in your own words
+- [ ] Add a photo of Kevin
+- [ ] Review the platform bullets and edit any you wouldn't defend
+- [ ] Optional: let Senator-elect Julie Rogers know her name appears in your bio
 - [ ] Connect the forms to a backend
 - [ ] Add a donation processor link
 - [ ] Replace the placeholder events with real ones
