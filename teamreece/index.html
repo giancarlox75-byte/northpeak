@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Reece | The Movement Starts Here</title>
+  <meta name="description" content="Team Reece: building a stronger Michigan. Read the platform, tell us your priorities, find an event, and join the team." />
+  <meta name="theme-color" content="#05070c" />
+  <meta property="og:title" content="Team Reece | The Movement Starts Here" />
+  <meta property="og:description" content="Build. Fight. Win. Building a stronger Michigan." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Michroma&family=Montserrat:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700;1,800;1,900&family=Playfair+Display:ital,wght@0,900;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="config.js"></script>
+</head>
+<body>
+
+  <!-- Shared SVG definitions: logo mark + Michigan silhouette -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="logo-mark" viewBox="0 0 400 260">
+        <text class="r" x="190" y="238" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-weight="900" font-size="290" fill="#fff">R</text>
+        <path class="swoosh" d="M22,214 C110,140 230,98 336,86" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" />
+        <path d="M22,214 C110,140 230,98 336,86" fill="none" stroke="#05070c" stroke-width="3" stroke-linecap="round" transform="translate(0,7)" opacity=".9" />
+        <polygon class="star" fill="#fff" points="360,55 366.5,73.1 385.7,73.7 370.5,85.4 375.9,103.8 360,93 344.1,103.8 349.5,85.4 334.3,73.7 353.5,73.1" />
+      </symbol>
+      <g id="michigan">
+        <!-- Upper Peninsula (stylized) -->
+        <path d="M40,98 L70,84 L110,78 L132,60 L162,38 L158,54 L148,72 L180,58 L205,66 L230,52 L250,70 L290,64 L325,66 L338,80 L350,96 L346,112 L328,118 L310,132 L290,126 L265,132 L240,136 L222,148 L205,156 L188,176 L172,196 L160,180 L140,160 L110,142 L80,128 L55,118 Z" />
+        <!-- Lower Peninsula (stylized mitten) -->
+        <path d="M296,160 L318,168 L340,176 L360,196 L372,214 L370,236 L356,262 L366,282 L384,272 L402,266 L420,284 L424,302 L414,320 L418,338 L408,356 L398,374 L392,392 L386,410 L236,410 L230,388 L226,360 L228,330 L236,300 L246,272 L250,246 L258,222 L264,198 L272,188 L278,204 L286,190 L288,172 Z" />
+      </g>
+    </defs>
+  </svg>
+
+  <!-- ================= NAV ================= -->
+  <header class="nav" id="nav">
+    <div class="wrap nav-inner">
+      <a href="#top" class="brand" aria-label="Team Reece home">
+        <span class="brand-mark"><svg viewBox="0 0 400 260"><use href="#logo-mark" /></svg></span>
+        <span class="brand-word">TEAM<b>REECE</b>HQ</span>
+      </a>
+      <nav aria-label="Main">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#movement">Movement</a></li>
+          <li><a href="#platform">Platform</a></li>
+          <li><a href="#priorities">Your Voice</a></li>
+          <li><a href="#map">Map</a></li>
+          <li><a href="#events">Events</a></li>
+          <li><a href="#join">Join</a></li>
+        </ul>
+      </nav>
+      <div class="nav-cta">
+        <a href="#join" class="btn btn-ghost btn-sm">Volunteer</a>
+        <a href="#donate" class="btn btn-primary btn-sm">Donate</a>
+        <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ================= HERO ================= -->
+    <section class="hero">
+      <canvas id="stars" aria-hidden="true"></canvas>
+      <svg class="hero-map" viewBox="20 20 420 410" aria-hidden="true"><use href="#michigan" /></svg>
+
+      <div class="hero-content wrap">
+        <svg class="hero-logo" viewBox="0 0 400 260" role="img" aria-label="Team Reece R logo"><use href="#logo-mark" /></svg>
+        <div class="hero-word">TEAM<b>REECE</b>HQ</div>
+        <div class="rule-star">★</div>
+        <h1 class="hero-tag">The Movement<br />Starts <span class="blue">Here.</span></h1>
+        <div class="hero-tag-rule"></div>
+        <p class="hero-sub" id="heroSub" aria-label="Build, Fight, Win"></p>
+        <p class="hero-office" data-office-line></p>
+        <div class="hero-actions">
+          <a href="#join" class="btn btn-primary">Join the Team →</a>
+          <a href="#platform" class="btn btn-ghost">See the Platform</a>
+        </div>
+        <div>
+          <div class="countdown" id="countdown" aria-live="off">
+            <div class="cd-unit"><div class="cd-num" data-cd="d">000</div><div class="cd-label">Days</div></div>
+            <div class="cd-unit"><div class="cd-num" data-cd="h">00</div><div class="cd-label">Hours</div></div>
+            <div class="cd-unit"><div class="cd-num" data-cd="m">00</div><div class="cd-label">Min</div></div>
+            <div class="cd-unit"><div class="cd-num" data-cd="s">00</div><div class="cd-label">Sec</div></div>
+          </div>
+          <p class="cd-caption" id="cdCaption">until Election Day</p>
+        </div>
+      </div>
+
+      <div class="hero-skyline" id="skyline" aria-hidden="true"></div>
+      <a href="#movement" class="scroll-hint" aria-label="Scroll down"></a>
+    </section>
+
+    <!-- ================= TICKER ================= -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track" id="ticker"></div>
+    </div>
+
+    <!-- ================= MOVEMENT ================= -->
+    <section class="section" id="movement">
+      <div class="wrap">
+        <div class="movement-grid">
+          <div class="movement-copy reveal">
+            <span class="eyebrow">The Movement</span>
+            <h2 class="h-display" style="margin:16px 0 26px">Building a<br /><span class="blue">Stronger</span> Michigan.</h2>
+            <p><strong>Team Reece is a place for ideas, community, and the future we're building together.</strong> It started with a simple belief: the people who get up early, work hard, and hold this state together deserve leaders who show up for them every day, not only in election season.</p>
+            <p>This campaign isn't run from the top down. It's built from the ground up, one conversation, one neighborhood, one county at a time. From the U.P. to Monroe, from the lakeshore to the Thumb.</p>
+            <p>This is just the beginning. Follow along. Get involved. Be part of what's next.</p>
+            <div class="signature" data-name-signature>Reece</div>
+          </div>
+          <div class="pillars">
+            <div class="pillar reveal">
+              <span class="pillar-num">01</span>
+              <h3>Build</h3>
+              <p>Good-paying jobs, roads that don't wreck your car, schools that set kids up to win, and housing families can actually afford.</p>
+            </div>
+            <div class="pillar reveal">
+              <span class="pillar-num">02</span>
+              <h3>Fight</h3>
+              <p>Against rising costs, backroom deals, and a system that forgets about working families. We fight for every Michigander, not special interests.</p>
+            </div>
+            <div class="pillar reveal">
+              <span class="pillar-num">03</span>
+              <h3>Win</h3>
+              <p>Real results you can see and feel in your community. Not slogans, scoreboards. We'll measure what we promise and report back.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats reveal">
+          <div class="stat"><div class="stat-num" data-count="83">0</div><div class="stat-label">Counties to reach</div></div>
+          <div class="stat"><div class="stat-num" data-count="10" data-suffix="M+">0</div><div class="stat-label">Michiganders</div></div>
+          <div class="stat"><div class="stat-num" data-count="3288" data-suffix=" mi">0</div><div class="stat-label">Freshwater shoreline</div></div>
+          <div class="stat"><div class="stat-num" data-count="1">0</div><div class="stat-label">Movement</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PLATFORM ================= -->
+    <section class="section platform" id="platform">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">The Platform</span>
+          <h2 class="h-display">The Plan for<br /><span class="blue">Michigan.</span></h2>
+          <p class="lede">Clear priorities, concrete plans. Tap any issue to see what the problem is, what we'll do, and why it matters to you.</p>
+        </div>
+        <div class="chips reveal" id="chips" role="tablist" aria-label="Filter issues"></div>
+        <div class="issue-grid" id="issueGrid"></div>
+      </div>
+    </section>
+
+    <!-- ================= PRIORITIES ================= -->
+    <section class="section" id="priorities">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Your Voice</span>
+          <h2 class="h-display">What Matters<br />Most <span class="blue">to You?</span></h2>
+          <p class="lede">This movement is built on listening. Pick your top 3 issues, in order, and see how you stack up with the rest of Team Reece.</p>
+        </div>
+        <div class="prio-grid">
+          <div class="reveal">
+            <div class="prio-options" id="prioOptions"></div>
+          </div>
+          <div class="prio-panel reveal" id="prioPanel">
+            <h3 id="prioTitle">Pick your top 3</h3>
+            <p class="hint" id="prioHint">Tap issues on the left. 0 of 3 selected.</p>
+            <div class="bars" id="prioBars"></div>
+            <div class="prio-actions">
+              <button class="btn btn-primary" id="prioSubmit" disabled>Lock In My Priorities</button>
+              <button class="btn btn-ghost" id="prioShare" hidden>Share</button>
+              <button class="btn btn-ghost" id="prioReset" hidden>Start Over</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MAP ================= -->
+    <section class="section map-section" id="map">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Every Corner</span>
+          <h2 class="h-display">One State.<br /><span class="blue">One Team.</span></h2>
+          <p class="lede">Tap a region to see what's at stake there and how to help organize where you live.</p>
+        </div>
+        <div class="map-grid">
+          <div class="reveal">
+            <svg class="mi-map" id="miMap" viewBox="20 20 440 410" role="group" aria-label="Map of Michigan regions">
+              <g class="land"><use href="#michigan" /></g>
+              <g id="pins"></g>
+            </svg>
+          </div>
+          <div class="region-card reveal" id="regionCard" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= EVENTS ================= -->
+    <section class="section" id="events">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">On the Road</span>
+          <h2 class="h-display">Upcoming<br /><span class="blue">Events.</span></h2>
+          <p class="lede">Come say hi. Every event is open to the public. RSVP so we save you a seat, and add it to your calendar in one tap.</p>
+        </div>
+        <div class="event-list" id="eventList"></div>
+      </div>
+    </section>
+
+    <!-- ================= JOIN ================= -->
+    <section class="section join" id="join">
+      <div class="wrap join-grid">
+        <div class="reveal">
+          <span class="eyebrow">Get Involved</span>
+          <h2 class="h-display" style="margin:16px 0 22px">Join<br /><span class="blue">The Team.</span></h2>
+          <p class="lede">Movements aren't watched, they're built. Whether you've got five minutes or five nights a week, there's a spot for you.</p>
+          <ul class="join-perks">
+            <li>Get first word on events, announcements, and campaign news</li>
+            <li>Knock doors, make calls, or host a coffee with your neighbors</li>
+            <li>Shape the platform with direct input sessions</li>
+            <li>Become a Region Captain and lead your community</li>
+          </ul>
+        </div>
+
+        <div class="form-card reveal">
+          <form id="joinForm" novalidate>
+            <div class="progress" aria-hidden="true"><i class="done"></i><i></i><i></i></div>
+
+            <fieldset class="step active" data-step="1">
+              <legend class="step-title">Who are you?</legend>
+              <p class="step-sub">Step 1 of 3, the basics.</p>
+              <div class="field-row">
+                <div class="field"><label for="fFirst">First name</label><input id="fFirst" name="first" autocomplete="given-name" required /><span class="err">Required</span></div>
+                <div class="field"><label for="fLast">Last name</label><input id="fLast" name="last" autocomplete="family-name" required /><span class="err">Required</span></div>
+              </div>
+              <div class="field"><label for="fEmail">Email</label><input id="fEmail" name="email" type="email" autocomplete="email" required /><span class="err">Enter a valid email</span></div>
+              <div class="field-row">
+                <div class="field"><label for="fPhone">Phone (optional)</label><input id="fPhone" name="phone" type="tel" autocomplete="tel" /></div>
+                <div class="field"><label for="fZip">ZIP code</label><input id="fZip" name="zip" inputmode="numeric" maxlength="5" autocomplete="postal-code" required /><span class="err">5-digit ZIP</span></div>
+              </div>
+            </fieldset>
+
+            <fieldset class="step" data-step="2">
+              <legend class="step-title">How do you want to help?</legend>
+              <p class="step-sub">Step 2 of 3. Pick as many as you like.</p>
+              <div class="checks">
+                <label class="check"><input type="checkbox" name="help" value="Door knocking" /><span>Knock doors</span></label>
+                <label class="check"><input type="checkbox" name="help" value="Phone/text bank" /><span>Phone &amp; text bank</span></label>
+                <label class="check"><input type="checkbox" name="help" value="Host an event" /><span>Host an event</span></label>
+                <label class="check"><input type="checkbox" name="help" value="Social media" /><span>Social media</span></label>
+                <label class="check"><input type="checkbox" name="help" value="Yard sign" /><span>Get a yard sign</span></label>
+                <label class="check"><input type="checkbox" name="help" value="Region captain" /><span>Region Captain</span></label>
+              </div>
+              <div class="field"><label for="fRegion">Your region</label>
+                <select id="fRegion" name="region" required><option value="">Select a region…</option></select>
+                <span class="err">Choose your region</span>
+              </div>
+            </fieldset>
+
+            <fieldset class="step" data-step="3">
+              <legend class="step-title">Last thing</legend>
+              <p class="step-sub">Step 3 of 3. When are you free?</p>
+              <div class="checks">
+                <label class="check"><input type="checkbox" name="when" value="Weekday evenings" /><span>Weekday evenings</span></label>
+                <label class="check"><input type="checkbox" name="when" value="Weekends" /><span>Weekends</span></label>
+                <label class="check"><input type="checkbox" name="when" value="Daytime" /><span>Daytime</span></label>
+                <label class="check"><input type="checkbox" name="when" value="Remote only" /><span>Remote only</span></label>
+              </div>
+              <div class="field"><label for="fMsg">What should Reece know? (optional)</label><textarea id="fMsg" name="message" rows="3" placeholder="The issue that keeps you up at night, an idea, a question…"></textarea></div>
+            </fieldset>
+
+            <div class="form-nav" id="formNav">
+              <button type="button" class="btn btn-ghost" id="prevBtn" hidden>← Back</button>
+              <span></span>
+              <button type="button" class="btn btn-primary" id="nextBtn">Next →</button>
+            </div>
+          </form>
+
+          <div class="success" id="joinSuccess">
+            <div class="big-star">★</div>
+            <h3>Welcome to the Team</h3>
+            <p>You're officially in. Watch your inbox, and share this with one friend.</p>
+            <div class="member-card" id="memberCard"></div>
+            <div style="display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap">
+              <button class="btn btn-primary btn-sm" id="shareJoin">Invite a Friend</button>
+              <button class="btn btn-ghost btn-sm" id="joinAgain">Sign up someone else</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= DONATE ================= -->
+    <section class="section" id="donate">
+      <div class="wrap">
+        <div class="donate-card reveal">
+          <div class="donate-left">
+            <span class="eyebrow">Chip In</span>
+            <h2 class="h-display" style="margin:16px 0 22px">Fuel the<br /><span class="blue">Movement.</span></h2>
+            <p class="lede">This campaign is powered by people, not PACs. Every dollar goes to organizing, outreach, and getting our message to every corner of Michigan.</p>
+            <ul class="join-perks">
+              <li>Grassroots-funded, people first</li>
+              <li>Transparent spending reports</li>
+              <li>Every gift, big or small, matters</li>
+            </ul>
+          </div>
+          <div class="donate-right">
+            <div class="toggle" role="group" aria-label="Donation frequency">
+              <button class="on" data-freq="once">One-time</button>
+              <button data-freq="monthly">Monthly</button>
+            </div>
+            <div class="amounts" id="amounts"></div>
+            <div class="custom-amt"><span>$</span><input id="customAmt" type="number" min="1" step="1" placeholder="Other amount" aria-label="Custom amount" /></div>
+            <div class="impact" id="impact"></div>
+            <button class="btn btn-primary" id="donateBtn" style="width:100%">Donate</button>
+            <p class="donate-fine" id="donateFine"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FAQ ================= -->
+    <section class="section" id="faq" style="padding-top:20px">
+      <div class="wrap">
+        <div class="section-head center reveal">
+          <span class="eyebrow">Questions</span>
+          <h2 class="h-display">Straight <span class="blue">Answers.</span></h2>
+        </div>
+        <div class="faq reveal">
+          <details><summary>What is Team Reece?</summary><div class="ans">Team Reece is a grassroots movement to build a stronger Michigan: a home for people who want better jobs, better roads, better schools, and leaders who actually answer to the people they serve.</div></details>
+          <details><summary>What office is Reece running for?</summary><div class="ans" data-office-faq>The official campaign announcement is coming soon. Join the team to be the first to know. Right now we're focused on listening to Michiganders and building the organization that wins.</div></details>
+          <details><summary>I've never volunteered before. Can I still help?</summary><div class="ans">Absolutely, most of our team is new to this. We run free trainings, pair new volunteers with experienced organizers, and there's work for every comfort level, including from your couch.</div></details>
+          <details><summary>How can I get Reece to come to my town?</summary><div class="ans">Sign up to host an event in the Join form, or email us. The listening tour is going to every region of the state, and community invitations move you up the list.</div></details>
+          <details><summary>Where does my donation go?</summary><div class="ans">Directly into organizing: events, volunteer tools, signs, literature, and digital outreach. Contributions are reported as required by law, and we'll publish plain-language spending updates.</div></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CTA ================= -->
+    <section class="cta-band">
+      <div class="wrap reveal">
+        <span class="eyebrow">Build · Fight · Win</span>
+        <h2 class="h-display" style="margin:20px 0 30px">This is just<br />the <span class="blue">beginning.</span></h2>
+        <div class="hero-actions" style="animation:none">
+          <a href="#join" class="btn btn-white">Join Team Reece</a>
+          <a class="btn btn-ghost" data-ig target="_blank" rel="noopener">Follow @officialreecehq</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ADMIN (visit ?admin) ================= -->
+    <section class="admin wrap" id="admin">
+      <span class="eyebrow">Campaign HQ</span>
+      <h2 class="h-display" style="margin:12px 0">Sign-ups <span class="blue">(this device)</span></h2>
+      <p class="lede">Submissions are stored in this browser until a backend is connected. Export to CSV to import into your CRM.</p>
+      <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
+        <button class="btn btn-primary btn-sm" id="exportCsv">Export CSV</button>
+        <button class="btn btn-ghost btn-sm" id="clearData">Clear data</button>
+      </div>
+      <div class="table-scroll"><table id="adminTable"></table></div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <a href="#top" class="brand"><span class="brand-mark"><svg viewBox="0 0 400 260"><use href="#logo-mark" /></svg></span><span class="brand-word" style="display:inline">TEAM<b>REECE</b>HQ</span></a>
+          <p style="margin-top:16px">The movement starts here. Building a stronger Michigan.</p>
+          <div class="socials">
+            <a data-ig target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+            <a href="#" data-mail aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <h4>Explore</h4>
+          <ul><li><a href="#movement">The Movement</a></li><li><a href="#platform">Platform</a></li><li><a href="#map">Regions</a></li><li><a href="#events">Events</a></li></ul>
+        </div>
+        <div>
+          <h4>Act</h4>
+          <ul><li><a href="#join">Volunteer</a></li><li><a href="#donate">Donate</a></li><li><a href="#priorities">Share Your Voice</a></li><li><a href="#faq">FAQ</a></li></ul>
+        </div>
+        <div>
+          <h4>Stay in the loop</h4>
+          <p>Campaign news, straight to your inbox. No spam.</p>
+          <form class="news" id="newsForm" novalidate>
+            <input type="email" placeholder="you@email.com" aria-label="Email address" required />
+            <button class="btn btn-primary btn-sm" type="submit">Sign up</button>
+          </form>
+        </div>
+      </div>
+      <div class="paid-for">
+        <div class="paid-box" id="paidFor"></div>
+        <div class="copyright">© <span id="year"></span> Team Reece. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Issue modal -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" data-close aria-label="Close">×</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <button class="to-top" id="toTop" aria-label="Back to top">↑</button>
+  <div class="toast" id="toast" role="status"></div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <script src="app.js"></script>
+</body>
+</html>
