@@ -36,6 +36,7 @@
 
   /* ---------- Backend API ---------- */
   async function api(path, data) {
+    if (C.preview) return previewApi(path, data);
     let r;
     try {
       r = await fetch(path, data ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) } : { headers: { Accept: "application/json" } });
@@ -45,6 +46,17 @@
     if (!r.ok) throw new Error(j.error || "Something went wrong. Please try again.");
     return j;
   }
+  // Preview mode (config `preview: true`): forms behave normally but nothing is sent or saved.
+  async function previewApi(path, data) {
+    await new Promise((r) => setTimeout(r, 450));
+    if (path === "/api/priorities") {
+      const t = store.get("previewTally", { scores: {}, voters: 0 });
+      if (data) { data.picks.forEach((id, i) => (t.scores[id] = (t.scores[id] || 0) + (3 - i))); t.voters++; store.set("previewTally", t); }
+      return t;
+    }
+    return { ok: true, already: false };
+  }
+  if (C.preview) document.body.insertAdjacentHTML("beforeend", '<div class="preview-tag" role="note">Preview · forms aren\'t saved</div>');
   function busy(btn, on, label) {
     if (on) { btn.dataset.label = btn.innerHTML; btn.disabled = true; btn.innerHTML = label || "Sending…"; }
     else { btn.disabled = false; if (btn.dataset.label) btn.innerHTML = btn.dataset.label; }
@@ -573,7 +585,7 @@
       openRsvp(events.find((ev) => ev.key === r.dataset.rsvp), r);
     }
     const c = e.target.closest("[data-ics]");
-    if (c) downloadICS(C.events[+c.dataset.ics]);
+    if (c) { if (C.preview) toast("Calendar downloads work on the live site."); else downloadICS(C.events[+c.dataset.ics]); }
   });
 
   function openRsvp(ev, btn) {
